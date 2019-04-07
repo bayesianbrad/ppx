@@ -9,6 +9,11 @@ const (
 	DistributionUniform Distribution = 2
 	DistributionCategorical Distribution = 3
 	DistributionPoisson Distribution = 4
+	DistributionBeta Distribution = 5
+	DistributionGamma Distribution = 6
+	DistributionLogNormal Distribution = 7
+	DistributionExponential Distribution = 8
+	DistributionWeibull Distribution = 9
 )
 
 var EnumNamesDistribution = map[Distribution]string{
@@ -17,5 +22,10 @@ var EnumNamesDistribution = map[Distribution]string{
 	DistributionUniform:"Uniform",
 	DistributionCategorical:"Categorical",
 	DistributionPoisson:"Poisson",
+	DistributionBeta:"Beta",
+	DistributionGamma:"Gamma",
+	DistributionLogNormal:"LogNormal",
+	DistributionExponential:"Exponential",
+	DistributionWeibull:"Weibull",
 }
 

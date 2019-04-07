@@ -29,7 +29,12 @@ export enum Distribution{
   Normal= 1,
   Uniform= 2,
   Categorical= 3,
-  Poisson= 4
+  Poisson= 4,
+  Beta= 5,
+  Gamma= 6,
+  LogNormal= 7,
+  Exponential= 8,
+  Weibull= 9
 }};
 
 /**

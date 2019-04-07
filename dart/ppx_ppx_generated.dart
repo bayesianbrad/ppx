@@ -69,7 +69,7 @@ class DistributionTypeId {
   }
 
   static const int minValue = 0;
-  static const int maxValue = 4;
+  static const int maxValue = 9;
   static bool containsValue(int value) => values.containsKey(value);
 
   static const DistributionTypeId NONE = const DistributionTypeId._(0);
@@ -77,7 +77,12 @@ class DistributionTypeId {
   static const DistributionTypeId Uniform = const DistributionTypeId._(2);
   static const DistributionTypeId Categorical = const DistributionTypeId._(3);
   static const DistributionTypeId Poisson = const DistributionTypeId._(4);
-  static get values => {0: NONE,1: Normal,2: Uniform,3: Categorical,4: Poisson,};
+  static const DistributionTypeId Beta = const DistributionTypeId._(5);
+  static const DistributionTypeId Gamma = const DistributionTypeId._(6);
+  static const DistributionTypeId LogNormal = const DistributionTypeId._(7);
+  static const DistributionTypeId Exponential = const DistributionTypeId._(8);
+  static const DistributionTypeId Weibull = const DistributionTypeId._(9);
+  static get values => {0: NONE,1: Normal,2: Uniform,3: Categorical,4: Poisson,5: Beta,6: Gamma,7: LogNormal,8: Exponential,9: Weibull,};
 
   static const fb.Reader<DistributionTypeId> reader = const _DistributionTypeIdReader();
 
@@ -615,6 +620,11 @@ class Sample {
       case 2: return Uniform.reader.vTableGet(_bc, _bcOffset, 10, null);
       case 3: return Categorical.reader.vTableGet(_bc, _bcOffset, 10, null);
       case 4: return Poisson.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 5: return Beta.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 6: return Gamma.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 7: return LogNormal.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 8: return Exponential.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 9: return Weibull.reader.vTableGet(_bc, _bcOffset, 10, null);
       default: return null;
     }
   }
@@ -832,6 +842,11 @@ class Observe {
       case 2: return Uniform.reader.vTableGet(_bc, _bcOffset, 10, null);
       case 3: return Categorical.reader.vTableGet(_bc, _bcOffset, 10, null);
       case 4: return Poisson.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 5: return Beta.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 6: return Gamma.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 7: return LogNormal.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 8: return Exponential.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 9: return Weibull.reader.vTableGet(_bc, _bcOffset, 10, null);
       default: return null;
     }
   }

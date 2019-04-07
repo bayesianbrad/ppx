@@ -169,17 +169,27 @@ enum Distribution {
   Distribution_Uniform = 2,
   Distribution_Categorical = 3,
   Distribution_Poisson = 4,
+  Distribution_Beta = 5,
+  Distribution_Gamma = 6,
+  Distribution_LogNormal = 7,
+  Distribution_Exponential = 8,
+  Distribution_Weibull = 9,
   Distribution_MIN = Distribution_NONE,
-  Distribution_MAX = Distribution_Poisson
+  Distribution_MAX = Distribution_Weibull
 };
 
-inline const Distribution (&EnumValuesDistribution())[5] {
+inline const Distribution (&EnumValuesDistribution())[10] {
   static const Distribution values[] = {
     Distribution_NONE,
     Distribution_Normal,
     Distribution_Uniform,
     Distribution_Categorical,
-    Distribution_Poisson
+    Distribution_Poisson,
+    Distribution_Beta,
+    Distribution_Gamma,
+    Distribution_LogNormal,
+    Distribution_Exponential,
+    Distribution_Weibull
   };
   return values;
 }
@@ -191,13 +201,18 @@ inline const char * const *EnumNamesDistribution() {
     "Uniform",
     "Categorical",
     "Poisson",
+    "Beta",
+    "Gamma",
+    "LogNormal",
+    "Exponential",
+    "Weibull",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameDistribution(Distribution e) {
-  if (e < Distribution_NONE || e > Distribution_Poisson) return "";
+  if (e < Distribution_NONE || e > Distribution_Weibull) return "";
   const size_t index = static_cast<int>(e);
   return EnumNamesDistribution()[index];
 }
@@ -220,6 +235,26 @@ template<> struct DistributionTraits<Categorical> {
 
 template<> struct DistributionTraits<Poisson> {
   static const Distribution enum_value = Distribution_Poisson;
+};
+
+template<> struct DistributionTraits<Beta> {
+  static const Distribution enum_value = Distribution_Beta;
+};
+
+template<> struct DistributionTraits<Gamma> {
+  static const Distribution enum_value = Distribution_Gamma;
+};
+
+template<> struct DistributionTraits<LogNormal> {
+  static const Distribution enum_value = Distribution_LogNormal;
+};
+
+template<> struct DistributionTraits<Exponential> {
+  static const Distribution enum_value = Distribution_Exponential;
+};
+
+template<> struct DistributionTraits<Weibull> {
+  static const Distribution enum_value = Distribution_Weibull;
 };
 
 bool VerifyDistribution(flatbuffers::Verifier &verifier, const void *obj, Distribution type);
@@ -635,6 +670,21 @@ struct Sample FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const Poisson *distribution_as_Poisson() const {
     return distribution_type() == Distribution_Poisson ? static_cast<const Poisson *>(distribution()) : nullptr;
   }
+  const Beta *distribution_as_Beta() const {
+    return distribution_type() == Distribution_Beta ? static_cast<const Beta *>(distribution()) : nullptr;
+  }
+  const Gamma *distribution_as_Gamma() const {
+    return distribution_type() == Distribution_Gamma ? static_cast<const Gamma *>(distribution()) : nullptr;
+  }
+  const LogNormal *distribution_as_LogNormal() const {
+    return distribution_type() == Distribution_LogNormal ? static_cast<const LogNormal *>(distribution()) : nullptr;
+  }
+  const Exponential *distribution_as_Exponential() const {
+    return distribution_type() == Distribution_Exponential ? static_cast<const Exponential *>(distribution()) : nullptr;
+  }
+  const Weibull *distribution_as_Weibull() const {
+    return distribution_type() == Distribution_Weibull ? static_cast<const Weibull *>(distribution()) : nullptr;
+  }
   bool control() const {
     return GetField<uint8_t>(VT_CONTROL, 1) != 0;
   }
@@ -670,6 +720,26 @@ template<> inline const Categorical *Sample::distribution_as<Categorical>() cons
 
 template<> inline const Poisson *Sample::distribution_as<Poisson>() const {
   return distribution_as_Poisson();
+}
+
+template<> inline const Beta *Sample::distribution_as<Beta>() const {
+  return distribution_as_Beta();
+}
+
+template<> inline const Gamma *Sample::distribution_as<Gamma>() const {
+  return distribution_as_Gamma();
+}
+
+template<> inline const LogNormal *Sample::distribution_as<LogNormal>() const {
+  return distribution_as_LogNormal();
+}
+
+template<> inline const Exponential *Sample::distribution_as<Exponential>() const {
+  return distribution_as_Exponential();
+}
+
+template<> inline const Weibull *Sample::distribution_as<Weibull>() const {
+  return distribution_as_Weibull();
 }
 
 struct SampleBuilder {
@@ -817,6 +887,21 @@ struct Observe FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const Poisson *distribution_as_Poisson() const {
     return distribution_type() == Distribution_Poisson ? static_cast<const Poisson *>(distribution()) : nullptr;
   }
+  const Beta *distribution_as_Beta() const {
+    return distribution_type() == Distribution_Beta ? static_cast<const Beta *>(distribution()) : nullptr;
+  }
+  const Gamma *distribution_as_Gamma() const {
+    return distribution_type() == Distribution_Gamma ? static_cast<const Gamma *>(distribution()) : nullptr;
+  }
+  const LogNormal *distribution_as_LogNormal() const {
+    return distribution_type() == Distribution_LogNormal ? static_cast<const LogNormal *>(distribution()) : nullptr;
+  }
+  const Exponential *distribution_as_Exponential() const {
+    return distribution_type() == Distribution_Exponential ? static_cast<const Exponential *>(distribution()) : nullptr;
+  }
+  const Weibull *distribution_as_Weibull() const {
+    return distribution_type() == Distribution_Weibull ? static_cast<const Weibull *>(distribution()) : nullptr;
+  }
   const Tensor *value() const {
     return GetPointer<const Tensor *>(VT_VALUE);
   }
@@ -849,6 +934,26 @@ template<> inline const Categorical *Observe::distribution_as<Categorical>() con
 
 template<> inline const Poisson *Observe::distribution_as<Poisson>() const {
   return distribution_as_Poisson();
+}
+
+template<> inline const Beta *Observe::distribution_as<Beta>() const {
+  return distribution_as_Beta();
+}
+
+template<> inline const Gamma *Observe::distribution_as<Gamma>() const {
+  return distribution_as_Gamma();
+}
+
+template<> inline const LogNormal *Observe::distribution_as<LogNormal>() const {
+  return distribution_as_LogNormal();
+}
+
+template<> inline const Exponential *Observe::distribution_as<Exponential>() const {
+  return distribution_as_Exponential();
+}
+
+template<> inline const Weibull *Observe::distribution_as<Weibull>() const {
+  return distribution_as_Weibull();
 }
 
 struct ObserveBuilder {
@@ -1595,6 +1700,26 @@ inline bool VerifyDistribution(flatbuffers::Verifier &verifier, const void *obj,
     }
     case Distribution_Poisson: {
       auto ptr = reinterpret_cast<const Poisson *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Distribution_Beta: {
+      auto ptr = reinterpret_cast<const Beta *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Distribution_Gamma: {
+      auto ptr = reinterpret_cast<const Gamma *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Distribution_LogNormal: {
+      auto ptr = reinterpret_cast<const LogNormal *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Distribution_Exponential: {
+      auto ptr = reinterpret_cast<const Exponential *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Distribution_Weibull: {
+      auto ptr = reinterpret_cast<const Weibull *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return false;

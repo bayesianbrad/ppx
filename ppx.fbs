@@ -33,7 +33,12 @@ union Distribution {
   Normal,
   Uniform,
   Categorical,
-  Poisson
+  Poisson,
+  Beta,
+  Gamma,
+  LogNormal,
+  Exponential,
+  Weibull
 }
 
 table Handshake {

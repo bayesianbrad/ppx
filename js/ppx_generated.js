@@ -32,7 +32,12 @@ ppx.Distribution = {
   Normal: 1, 1: 'Normal',
   Uniform: 2, 2: 'Uniform',
   Categorical: 3, 3: 'Categorical',
-  Poisson: 4, 4: 'Poisson'
+  Poisson: 4, 4: 'Poisson',
+  Beta: 5, 5: 'Beta',
+  Gamma: 6, 6: 'Gamma',
+  LogNormal: 7, 7: 'LogNormal',
+  Exponential: 8, 8: 'Exponential',
+  Weibull: 9, 9: 'Weibull'
 };
 
 /**

@@ -8,6 +8,11 @@ local Distribution = {
     Uniform = 2,
     Categorical = 3,
     Poisson = 4,
+    Beta = 5,
+    Gamma = 6,
+    LogNormal = 7,
+    Exponential = 8,
+    Weibull = 9,
 }
 
 return Distribution -- return the module

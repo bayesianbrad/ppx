@@ -10,6 +10,11 @@ class Distribution
     const Uniform = 2;
     const Categorical = 3;
     const Poisson = 4;
+    const Beta = 5;
+    const Gamma = 6;
+    const LogNormal = 7;
+    const Exponential = 8;
+    const Weibull = 9;
 
     private static $names = array(
         Distribution::NONE=>"NONE",
@@ -17,6 +22,11 @@ class Distribution
         Distribution::Uniform=>"Uniform",
         Distribution::Categorical=>"Categorical",
         Distribution::Poisson=>"Poisson",
+        Distribution::Beta=>"Beta",
+        Distribution::Gamma=>"Gamma",
+        Distribution::LogNormal=>"LogNormal",
+        Distribution::Exponential=>"Exponential",
+        Distribution::Weibull=>"Weibull",
     );
 
     public static function Name($e)

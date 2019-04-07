@@ -117,11 +117,16 @@ pub enum Distribution {
   Uniform = 2,
   Categorical = 3,
   Poisson = 4,
+  Beta = 5,
+  Gamma = 6,
+  LogNormal = 7,
+  Exponential = 8,
+  Weibull = 9,
 
 }
 
 const ENUM_MIN_DISTRIBUTION: u8 = 0;
-const ENUM_MAX_DISTRIBUTION: u8 = 4;
+const ENUM_MAX_DISTRIBUTION: u8 = 9;
 
 impl<'a> flatbuffers::Follow<'a> for Distribution {
   type Inner = Self;
@@ -155,21 +160,31 @@ impl flatbuffers::Push for Distribution {
 }
 
 #[allow(non_camel_case_types)]
-const ENUM_VALUES_DISTRIBUTION:[Distribution; 5] = [
+const ENUM_VALUES_DISTRIBUTION:[Distribution; 10] = [
   Distribution::NONE,
   Distribution::Normal,
   Distribution::Uniform,
   Distribution::Categorical,
-  Distribution::Poisson
+  Distribution::Poisson,
+  Distribution::Beta,
+  Distribution::Gamma,
+  Distribution::LogNormal,
+  Distribution::Exponential,
+  Distribution::Weibull
 ];
 
 #[allow(non_camel_case_types)]
-const ENUM_NAMES_DISTRIBUTION:[&'static str; 5] = [
+const ENUM_NAMES_DISTRIBUTION:[&'static str; 10] = [
     "NONE",
     "Normal",
     "Uniform",
     "Categorical",
-    "Poisson"
+    "Poisson",
+    "Beta",
+    "Gamma",
+    "LogNormal",
+    "Exponential",
+    "Weibull"
 ];
 
 pub fn enum_name_distribution(e: Distribution) -> &'static str {
@@ -876,6 +891,56 @@ impl<'a> Sample<'a> {
     }
   }
 
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn distribution_as_beta(&self) -> Option<Beta<'a>> {
+    if self.distribution_type() == Distribution::Beta {
+      self.distribution().map(|u| Beta::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn distribution_as_gamma(&self) -> Option<Gamma<'a>> {
+    if self.distribution_type() == Distribution::Gamma {
+      self.distribution().map(|u| Gamma::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn distribution_as_log_normal(&self) -> Option<LogNormal<'a>> {
+    if self.distribution_type() == Distribution::LogNormal {
+      self.distribution().map(|u| LogNormal::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn distribution_as_exponential(&self) -> Option<Exponential<'a>> {
+    if self.distribution_type() == Distribution::Exponential {
+      self.distribution().map(|u| Exponential::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn distribution_as_weibull(&self) -> Option<Weibull<'a>> {
+    if self.distribution_type() == Distribution::Weibull {
+      self.distribution().map(|u| Weibull::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
 }
 
 pub struct SampleArgs<'a> {
@@ -1117,6 +1182,56 @@ impl<'a> Observe<'a> {
   pub fn distribution_as_poisson(&self) -> Option<Poisson<'a>> {
     if self.distribution_type() == Distribution::Poisson {
       self.distribution().map(|u| Poisson::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn distribution_as_beta(&self) -> Option<Beta<'a>> {
+    if self.distribution_type() == Distribution::Beta {
+      self.distribution().map(|u| Beta::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn distribution_as_gamma(&self) -> Option<Gamma<'a>> {
+    if self.distribution_type() == Distribution::Gamma {
+      self.distribution().map(|u| Gamma::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn distribution_as_log_normal(&self) -> Option<LogNormal<'a>> {
+    if self.distribution_type() == Distribution::LogNormal {
+      self.distribution().map(|u| LogNormal::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn distribution_as_exponential(&self) -> Option<Exponential<'a>> {
+    if self.distribution_type() == Distribution::Exponential {
+      self.distribution().map(|u| Exponential::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn distribution_as_weibull(&self) -> Option<Weibull<'a>> {
+    if self.distribution_type() == Distribution::Weibull {
+      self.distribution().map(|u| Weibull::init_from_table(u))
     } else {
       None
     }

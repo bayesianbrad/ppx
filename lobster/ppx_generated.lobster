@@ -23,7 +23,12 @@ enum +
     Distribution_Normal = 1,
     Distribution_Uniform = 2,
     Distribution_Categorical = 3,
-    Distribution_Poisson = 4
+    Distribution_Poisson = 4,
+    Distribution_Beta = 5,
+    Distribution_Gamma = 6,
+    Distribution_LogNormal = 7,
+    Distribution_Exponential = 8,
+    Distribution_Weibull = 9
 
 struct Message
 
@@ -207,6 +212,16 @@ struct Sample : flatbuffers_handle
         ppx_Categorical { buf_, buf_.flatbuffers_field_table(pos_, 10) }
     def distribution_as_Poisson():
         ppx_Poisson { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_Beta():
+        ppx_Beta { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_Gamma():
+        ppx_Gamma { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_LogNormal():
+        ppx_LogNormal { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_Exponential():
+        ppx_Exponential { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_Weibull():
+        ppx_Weibull { buf_, buf_.flatbuffers_field_table(pos_, 10) }
     def control():
         buf_.flatbuffers_field_int8(pos_, 12, 1)
     def replace():
@@ -260,6 +275,16 @@ struct Observe : flatbuffers_handle
         ppx_Categorical { buf_, buf_.flatbuffers_field_table(pos_, 10) }
     def distribution_as_Poisson():
         ppx_Poisson { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_Beta():
+        ppx_Beta { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_Gamma():
+        ppx_Gamma { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_LogNormal():
+        ppx_LogNormal { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_Exponential():
+        ppx_Exponential { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_Weibull():
+        ppx_Weibull { buf_, buf_.flatbuffers_field_table(pos_, 10) }
     def value_():
         o := buf_.flatbuffers_field_table(pos_, 12)
         if o: ppx_Tensor { buf_, o } else: nil
