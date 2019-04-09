@@ -30,11 +30,10 @@ export enum Distribution{
   Uniform= 2,
   Categorical= 3,
   Poisson= 4,
-  Beta= 5,
-  Gamma= 6,
-  LogNormal= 7,
-  Exponential= 8,
-  Weibull= 9
+  Gamma= 5,
+  LogNormal= 6,
+  Exponential= 7,
+  Weibull= 8
 }};
 
 /**
@@ -1409,86 +1408,6 @@ static addRate(builder:flatbuffers.Builder, rateOffset:flatbuffers.Offset) {
  * @returns flatbuffers.Offset
  */
 static endPoisson(builder:flatbuffers.Builder):flatbuffers.Offset {
-  var offset = builder.endObject();
-  return offset;
-};
-
-}
-}
-/**
- * @constructor
- */
-export namespace ppx{
-export class Beta {
-  bb: flatbuffers.ByteBuffer|null = null;
-
-  bb_pos:number = 0;
-/**
- * @param number i
- * @param flatbuffers.ByteBuffer bb
- * @returns Beta
- */
-__init(i:number, bb:flatbuffers.ByteBuffer):Beta {
-  this.bb_pos = i;
-  this.bb = bb;
-  return this;
-};
-
-/**
- * @param flatbuffers.ByteBuffer bb
- * @param Beta= obj
- * @returns Beta
- */
-static getRootAsBeta(bb:flatbuffers.ByteBuffer, obj?:Beta):Beta {
-  return (obj || new Beta).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @param ppx.Tensor= obj
- * @returns ppx.Tensor|null
- */
-concentration0(obj?:ppx.Tensor):ppx.Tensor|null {
-  var offset = this.bb!.__offset(this.bb_pos, 4);
-  return offset ? (obj || new ppx.Tensor).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-};
-
-/**
- * @param ppx.Tensor= obj
- * @returns ppx.Tensor|null
- */
-concentration1(obj?:ppx.Tensor):ppx.Tensor|null {
-  var offset = this.bb!.__offset(this.bb_pos, 6);
-  return offset ? (obj || new ppx.Tensor).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
-};
-
-/**
- * @param flatbuffers.Builder builder
- */
-static startBeta(builder:flatbuffers.Builder) {
-  builder.startObject(2);
-};
-
-/**
- * @param flatbuffers.Builder builder
- * @param flatbuffers.Offset concentration0Offset
- */
-static addConcentration0(builder:flatbuffers.Builder, concentration0Offset:flatbuffers.Offset) {
-  builder.addFieldOffset(0, concentration0Offset, 0);
-};
-
-/**
- * @param flatbuffers.Builder builder
- * @param flatbuffers.Offset concentration1Offset
- */
-static addConcentration1(builder:flatbuffers.Builder, concentration1Offset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, concentration1Offset, 0);
-};
-
-/**
- * @param flatbuffers.Builder builder
- * @returns flatbuffers.Offset
- */
-static endBeta(builder:flatbuffers.Builder):flatbuffers.Offset {
   var offset = builder.endObject();
   return offset;
 };

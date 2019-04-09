@@ -34,7 +34,6 @@ union Distribution {
   Uniform,
   Categorical,
   Poisson,
-  Beta,
   Gamma,
   LogNormal,
   Exponential,
@@ -103,11 +102,6 @@ table Categorical {
 
 table Poisson {
   rate: Tensor;
-}
-
-table Beta {
-  concentration0: Tensor;
-  concentration1: Tensor;
 }
 
 table Gamma {
