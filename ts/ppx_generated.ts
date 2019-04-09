@@ -130,12 +130,6 @@ static finishMessageBuffer(builder:flatbuffers.Builder, offset:flatbuffers.Offse
   builder.finish(offset, 'PPXF');
 };
 
-static createMessage(builder:flatbuffers.Builder, bodyType:ppx.MessageBody, bodyOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Message.startMessage(builder);
-  Message.addBodyType(builder, bodyType);
-  Message.addBody(builder, bodyOffset);
-  return Message.endMessage(builder);
-}
 }
 }
 /**
@@ -290,12 +284,6 @@ static endTensor(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createTensor(builder:flatbuffers.Builder, dataOffset:flatbuffers.Offset, shapeOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Tensor.startTensor(builder);
-  Tensor.addData(builder, dataOffset);
-  Tensor.addShape(builder, shapeOffset);
-  return Tensor.endTensor(builder);
-}
 }
 }
 /**
@@ -361,11 +349,6 @@ static endHandshake(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createHandshake(builder:flatbuffers.Builder, systemNameOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Handshake.startHandshake(builder);
-  Handshake.addSystemName(builder, systemNameOffset);
-  return Handshake.endHandshake(builder);
-}
 }
 }
 /**
@@ -450,12 +433,6 @@ static endHandshakeResult(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createHandshakeResult(builder:flatbuffers.Builder, systemNameOffset:flatbuffers.Offset, modelNameOffset:flatbuffers.Offset):flatbuffers.Offset {
-  HandshakeResult.startHandshakeResult(builder);
-  HandshakeResult.addSystemName(builder, systemNameOffset);
-  HandshakeResult.addModelName(builder, modelNameOffset);
-  return HandshakeResult.endHandshakeResult(builder);
-}
 }
 }
 /**
@@ -502,10 +479,6 @@ static endRun(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createRun(builder:flatbuffers.Builder):flatbuffers.Offset {
-  Run.startRun(builder);
-  return Run.endRun(builder);
-}
 }
 }
 /**
@@ -569,11 +542,6 @@ static endRunResult(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createRunResult(builder:flatbuffers.Builder, resultOffset:flatbuffers.Offset):flatbuffers.Offset {
-  RunResult.startRunResult(builder);
-  RunResult.addResult(builder, resultOffset);
-  return RunResult.endRunResult(builder);
-}
 }
 }
 /**
@@ -723,16 +691,6 @@ static endSample(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createSample(builder:flatbuffers.Builder, addressOffset:flatbuffers.Offset, nameOffset:flatbuffers.Offset, distributionType:ppx.Distribution, distributionOffset:flatbuffers.Offset, control:boolean, replace:boolean):flatbuffers.Offset {
-  Sample.startSample(builder);
-  Sample.addAddress(builder, addressOffset);
-  Sample.addName(builder, nameOffset);
-  Sample.addDistributionType(builder, distributionType);
-  Sample.addDistribution(builder, distributionOffset);
-  Sample.addControl(builder, control);
-  Sample.addReplace(builder, replace);
-  return Sample.endSample(builder);
-}
 }
 }
 /**
@@ -796,11 +754,6 @@ static endSampleResult(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createSampleResult(builder:flatbuffers.Builder, resultOffset:flatbuffers.Offset):flatbuffers.Offset {
-  SampleResult.startSampleResult(builder);
-  SampleResult.addResult(builder, resultOffset);
-  return SampleResult.endSampleResult(builder);
-}
 }
 }
 /**
@@ -935,15 +888,6 @@ static endObserve(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createObserve(builder:flatbuffers.Builder, addressOffset:flatbuffers.Offset, nameOffset:flatbuffers.Offset, distributionType:ppx.Distribution, distributionOffset:flatbuffers.Offset, valueOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Observe.startObserve(builder);
-  Observe.addAddress(builder, addressOffset);
-  Observe.addName(builder, nameOffset);
-  Observe.addDistributionType(builder, distributionType);
-  Observe.addDistribution(builder, distributionOffset);
-  Observe.addValue(builder, valueOffset);
-  return Observe.endObserve(builder);
-}
 }
 }
 /**
@@ -990,10 +934,6 @@ static endObserveResult(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createObserveResult(builder:flatbuffers.Builder):flatbuffers.Offset {
-  ObserveResult.startObserveResult(builder);
-  return ObserveResult.endObserveResult(builder);
-}
 }
 }
 /**
@@ -1095,13 +1035,6 @@ static endTag(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createTag(builder:flatbuffers.Builder, addressOffset:flatbuffers.Offset, nameOffset:flatbuffers.Offset, valueOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Tag.startTag(builder);
-  Tag.addAddress(builder, addressOffset);
-  Tag.addName(builder, nameOffset);
-  Tag.addValue(builder, valueOffset);
-  return Tag.endTag(builder);
-}
 }
 }
 /**
@@ -1148,10 +1081,6 @@ static endTagResult(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createTagResult(builder:flatbuffers.Builder):flatbuffers.Offset {
-  TagResult.startTagResult(builder);
-  return TagResult.endTagResult(builder);
-}
 }
 }
 /**
@@ -1198,10 +1127,6 @@ static endReset(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createReset(builder:flatbuffers.Builder):flatbuffers.Offset {
-  Reset.startReset(builder);
-  return Reset.endReset(builder);
-}
 }
 }
 /**
@@ -1282,12 +1207,6 @@ static endNormal(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createNormal(builder:flatbuffers.Builder, meanOffset:flatbuffers.Offset, stddevOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Normal.startNormal(builder);
-  Normal.addMean(builder, meanOffset);
-  Normal.addStddev(builder, stddevOffset);
-  return Normal.endNormal(builder);
-}
 }
 }
 /**
@@ -1368,12 +1287,6 @@ static endUniform(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createUniform(builder:flatbuffers.Builder, lowOffset:flatbuffers.Offset, highOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Uniform.startUniform(builder);
-  Uniform.addLow(builder, lowOffset);
-  Uniform.addHigh(builder, highOffset);
-  return Uniform.endUniform(builder);
-}
 }
 }
 /**
@@ -1437,11 +1350,6 @@ static endCategorical(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createCategorical(builder:flatbuffers.Builder, probsOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Categorical.startCategorical(builder);
-  Categorical.addProbs(builder, probsOffset);
-  return Categorical.endCategorical(builder);
-}
 }
 }
 /**
@@ -1505,11 +1413,6 @@ static endPoisson(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createPoisson(builder:flatbuffers.Builder, rateOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Poisson.startPoisson(builder);
-  Poisson.addRate(builder, rateOffset);
-  return Poisson.endPoisson(builder);
-}
 }
 }
 /**
@@ -1590,12 +1493,6 @@ static endBeta(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createBeta(builder:flatbuffers.Builder, concentration0Offset:flatbuffers.Offset, concentration1Offset:flatbuffers.Offset):flatbuffers.Offset {
-  Beta.startBeta(builder);
-  Beta.addConcentration0(builder, concentration0Offset);
-  Beta.addConcentration1(builder, concentration1Offset);
-  return Beta.endBeta(builder);
-}
 }
 }
 /**
@@ -1676,12 +1573,6 @@ static endGamma(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createGamma(builder:flatbuffers.Builder, concentrationOffset:flatbuffers.Offset, rateOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Gamma.startGamma(builder);
-  Gamma.addConcentration(builder, concentrationOffset);
-  Gamma.addRate(builder, rateOffset);
-  return Gamma.endGamma(builder);
-}
 }
 }
 /**
@@ -1762,12 +1653,6 @@ static endLogNormal(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createLogNormal(builder:flatbuffers.Builder, meanOffset:flatbuffers.Offset, stddevOffset:flatbuffers.Offset):flatbuffers.Offset {
-  LogNormal.startLogNormal(builder);
-  LogNormal.addMean(builder, meanOffset);
-  LogNormal.addStddev(builder, stddevOffset);
-  return LogNormal.endLogNormal(builder);
-}
 }
 }
 /**
@@ -1831,11 +1716,6 @@ static endExponential(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createExponential(builder:flatbuffers.Builder, rateOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Exponential.startExponential(builder);
-  Exponential.addRate(builder, rateOffset);
-  return Exponential.endExponential(builder);
-}
 }
 }
 /**
@@ -1916,11 +1796,5 @@ static endWeibull(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createWeibull(builder:flatbuffers.Builder, scaleOffset:flatbuffers.Offset, concetrationOffset:flatbuffers.Offset):flatbuffers.Offset {
-  Weibull.startWeibull(builder);
-  Weibull.addScale(builder, scaleOffset);
-  Weibull.addConcetration(builder, concetrationOffset);
-  return Weibull.endWeibull(builder);
-}
 }
 }
