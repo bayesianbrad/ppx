@@ -1678,7 +1678,7 @@ scale(obj?:ppx.Tensor):ppx.Tensor|null {
  * @param ppx.Tensor= obj
  * @returns ppx.Tensor|null
  */
-concetration(obj?:ppx.Tensor):ppx.Tensor|null {
+concentration(obj?:ppx.Tensor):ppx.Tensor|null {
   var offset = this.bb!.__offset(this.bb_pos, 6);
   return offset ? (obj || new ppx.Tensor).__init(this.bb!.__indirect(this.bb_pos + offset), this.bb!) : null;
 };
@@ -1700,10 +1700,10 @@ static addScale(builder:flatbuffers.Builder, scaleOffset:flatbuffers.Offset) {
 
 /**
  * @param flatbuffers.Builder builder
- * @param flatbuffers.Offset concetrationOffset
+ * @param flatbuffers.Offset concentrationOffset
  */
-static addConcetration(builder:flatbuffers.Builder, concetrationOffset:flatbuffers.Offset) {
-  builder.addFieldOffset(1, concetrationOffset, 0);
+static addConcentration(builder:flatbuffers.Builder, concentrationOffset:flatbuffers.Offset) {
+  builder.addFieldOffset(1, concentrationOffset, 0);
 };
 
 /**

@@ -39,7 +39,7 @@ func (rcv *Weibull) Scale(obj *Tensor) *Tensor {
 	return nil
 }
 
-func (rcv *Weibull) Concetration(obj *Tensor) *Tensor {
+func (rcv *Weibull) Concentration(obj *Tensor) *Tensor {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(6))
 	if o != 0 {
 		x := rcv._tab.Indirect(o + rcv._tab.Pos)
@@ -58,8 +58,8 @@ func WeibullStart(builder *flatbuffers.Builder) {
 func WeibullAddScale(builder *flatbuffers.Builder, scale flatbuffers.UOffsetT) {
 	builder.PrependUOffsetTSlot(0, flatbuffers.UOffsetT(scale), 0)
 }
-func WeibullAddConcetration(builder *flatbuffers.Builder, concetration flatbuffers.UOffsetT) {
-	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(concetration), 0)
+func WeibullAddConcentration(builder *flatbuffers.Builder, concentration flatbuffers.UOffsetT) {
+	builder.PrependUOffsetTSlot(1, flatbuffers.UOffsetT(concentration), 0)
 }
 func WeibullEnd(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	return builder.EndObject()

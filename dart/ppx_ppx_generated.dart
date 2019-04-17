@@ -1819,11 +1819,11 @@ class Weibull {
   final int _bcOffset;
 
   Tensor get scale => Tensor.reader.vTableGet(_bc, _bcOffset, 4, null);
-  Tensor get concetration => Tensor.reader.vTableGet(_bc, _bcOffset, 6, null);
+  Tensor get concentration => Tensor.reader.vTableGet(_bc, _bcOffset, 6, null);
 
   @override
   String toString() {
-    return 'Weibull{scale: $scale, concetration: $concetration}';
+    return 'Weibull{scale: $scale, concentration: $concentration}';
   }
 }
 
@@ -1850,7 +1850,7 @@ class WeibullBuilder {
     fbBuilder.addOffset(0, offset);
     return fbBuilder.offset;
   }
-  int addConcetrationOffset(int offset) {
+  int addConcentrationOffset(int offset) {
     fbBuilder.addOffset(1, offset);
     return fbBuilder.offset;
   }
@@ -1862,14 +1862,14 @@ class WeibullBuilder {
 
 class WeibullObjectBuilder extends fb.ObjectBuilder {
   final TensorObjectBuilder _scale;
-  final TensorObjectBuilder _concetration;
+  final TensorObjectBuilder _concentration;
 
   WeibullObjectBuilder({
     TensorObjectBuilder scale,
-    TensorObjectBuilder concetration,
+    TensorObjectBuilder concentration,
   })
       : _scale = scale,
-        _concetration = concetration;
+        _concentration = concentration;
 
   /// Finish building, and store into the [fbBuilder].
   @override
@@ -1877,14 +1877,14 @@ class WeibullObjectBuilder extends fb.ObjectBuilder {
     fb.Builder fbBuilder) {
     assert(fbBuilder != null);
     final int scaleOffset = _scale?.getOrCreateOffset(fbBuilder);
-    final int concetrationOffset = _concetration?.getOrCreateOffset(fbBuilder);
+    final int concentrationOffset = _concentration?.getOrCreateOffset(fbBuilder);
 
     fbBuilder.startTable();
     if (scaleOffset != null) {
       fbBuilder.addOffset(0, scaleOffset);
     }
-    if (concetrationOffset != null) {
-      fbBuilder.addOffset(1, concetrationOffset);
+    if (concentrationOffset != null) {
+      fbBuilder.addOffset(1, concentrationOffset);
     }
     return fbBuilder.endTable();
   }

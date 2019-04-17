@@ -30,7 +30,7 @@ function Weibull_mt:Scale()
         return obj
     end
 end
-function Weibull_mt:Concetration()
+function Weibull_mt:Concentration()
     local o = self.view:Offset(6)
     if o ~= 0 then
         local x = self.view:Indirect(o + self.view.pos)
@@ -41,7 +41,7 @@ function Weibull_mt:Concetration()
 end
 function Weibull.Start(builder) builder:StartObject(2) end
 function Weibull.AddScale(builder, scale) builder:PrependUOffsetTRelativeSlot(0, scale, 0) end
-function Weibull.AddConcetration(builder, concetration) builder:PrependUOffsetTRelativeSlot(1, concetration, 0) end
+function Weibull.AddConcentration(builder, concentration) builder:PrependUOffsetTRelativeSlot(1, concentration, 0) end
 function Weibull.End(builder) return builder:EndObject() end
 
 return Weibull -- return the module

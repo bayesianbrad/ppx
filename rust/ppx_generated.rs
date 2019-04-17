@@ -2171,34 +2171,34 @@ impl<'a> Weibull<'a> {
         _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
         args: &'args WeibullArgs<'args>) -> flatbuffers::WIPOffset<Weibull<'bldr>> {
       let mut builder = WeibullBuilder::new(_fbb);
-      if let Some(x) = args.concetration { builder.add_concetration(x); }
+      if let Some(x) = args.concentration { builder.add_concentration(x); }
       if let Some(x) = args.scale { builder.add_scale(x); }
       builder.finish()
     }
 
     pub const VT_SCALE: flatbuffers::VOffsetT = 4;
-    pub const VT_CONCETRATION: flatbuffers::VOffsetT = 6;
+    pub const VT_CONCENTRATION: flatbuffers::VOffsetT = 6;
 
   #[inline]
   pub fn scale(&self) -> Option<Tensor<'a>> {
     self._tab.get::<flatbuffers::ForwardsUOffset<Tensor<'a>>>(Weibull::VT_SCALE, None)
   }
   #[inline]
-  pub fn concetration(&self) -> Option<Tensor<'a>> {
-    self._tab.get::<flatbuffers::ForwardsUOffset<Tensor<'a>>>(Weibull::VT_CONCETRATION, None)
+  pub fn concentration(&self) -> Option<Tensor<'a>> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<Tensor<'a>>>(Weibull::VT_CONCENTRATION, None)
   }
 }
 
 pub struct WeibullArgs<'a> {
     pub scale: Option<flatbuffers::WIPOffset<Tensor<'a >>>,
-    pub concetration: Option<flatbuffers::WIPOffset<Tensor<'a >>>,
+    pub concentration: Option<flatbuffers::WIPOffset<Tensor<'a >>>,
 }
 impl<'a> Default for WeibullArgs<'a> {
     #[inline]
     fn default() -> Self {
         WeibullArgs {
             scale: None,
-            concetration: None,
+            concentration: None,
         }
     }
 }
@@ -2212,8 +2212,8 @@ impl<'a: 'b, 'b> WeibullBuilder<'a, 'b> {
     self.fbb_.push_slot_always::<flatbuffers::WIPOffset<Tensor>>(Weibull::VT_SCALE, scale);
   }
   #[inline]
-  pub fn add_concetration(&mut self, concetration: flatbuffers::WIPOffset<Tensor<'b >>) {
-    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<Tensor>>(Weibull::VT_CONCETRATION, concetration);
+  pub fn add_concentration(&mut self, concentration: flatbuffers::WIPOffset<Tensor<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<Tensor>>(Weibull::VT_CONCENTRATION, concentration);
   }
   #[inline]
   pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> WeibullBuilder<'a, 'b> {

@@ -119,7 +119,7 @@ table Exponential {
 }
 table Weibull {
   scale: Tensor;
-  concetration: Tensor;
+  concentration: Tensor;
 }
 
 root_type Message;

@@ -49,7 +49,7 @@ class Weibull extends Table
         return $o != 0 ? $obj->init($this->__indirect($o + $this->bb_pos), $this->bb) : 0;
     }
 
-    public function getConcetration()
+    public function getConcentration()
     {
         $obj = new Tensor();
         $o = $this->__offset(6);
@@ -69,11 +69,11 @@ class Weibull extends Table
      * @param FlatBufferBuilder $builder
      * @return Weibull
      */
-    public static function createWeibull(FlatBufferBuilder $builder, $scale, $concetration)
+    public static function createWeibull(FlatBufferBuilder $builder, $scale, $concentration)
     {
         $builder->startObject(2);
         self::addScale($builder, $scale);
-        self::addConcetration($builder, $concetration);
+        self::addConcentration($builder, $concentration);
         $o = $builder->endObject();
         return $o;
     }
@@ -93,9 +93,9 @@ class Weibull extends Table
      * @param int
      * @return void
      */
-    public static function addConcetration(FlatBufferBuilder $builder, $concetration)
+    public static function addConcentration(FlatBufferBuilder $builder, $concentration)
     {
-        $builder->addOffsetX(1, $concetration, 0);
+        $builder->addOffsetX(1, $concentration, 0);
     }
 
     /**

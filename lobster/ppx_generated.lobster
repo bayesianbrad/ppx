@@ -470,7 +470,7 @@ struct Weibull : flatbuffers_handle
     def scale():
         o := buf_.flatbuffers_field_table(pos_, 4)
         if o: ppx_Tensor { buf_, o } else: nil
-    def concetration():
+    def concentration():
         o := buf_.flatbuffers_field_table(pos_, 6)
         if o: ppx_Tensor { buf_, o } else: nil
 
@@ -480,8 +480,8 @@ def WeibullStart(b_:flatbuffers_builder):
     b_.StartObject(2)
 def WeibullAddScale(b_:flatbuffers_builder, scale:int):
     b_.PrependUOffsetTRelativeSlot(0, scale, 0)
-def WeibullAddConcetration(b_:flatbuffers_builder, concetration:int):
-    b_.PrependUOffsetTRelativeSlot(1, concetration, 0)
+def WeibullAddConcentration(b_:flatbuffers_builder, concentration:int):
+    b_.PrependUOffsetTRelativeSlot(1, concentration, 0)
 def WeibullEnd(b_:flatbuffers_builder):
     b_.EndObject()
 

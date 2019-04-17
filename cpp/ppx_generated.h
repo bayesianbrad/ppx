@@ -1479,20 +1479,20 @@ inline flatbuffers::Offset<Exponential> CreateExponential(
 struct Weibull FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum {
     VT_SCALE = 4,
-    VT_CONCETRATION = 6
+    VT_CONCENTRATION = 6
   };
   const Tensor *scale() const {
     return GetPointer<const Tensor *>(VT_SCALE);
   }
-  const Tensor *concetration() const {
-    return GetPointer<const Tensor *>(VT_CONCETRATION);
+  const Tensor *concentration() const {
+    return GetPointer<const Tensor *>(VT_CONCENTRATION);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_SCALE) &&
            verifier.VerifyTable(scale()) &&
-           VerifyOffset(verifier, VT_CONCETRATION) &&
-           verifier.VerifyTable(concetration()) &&
+           VerifyOffset(verifier, VT_CONCENTRATION) &&
+           verifier.VerifyTable(concentration()) &&
            verifier.EndTable();
   }
 };
@@ -1503,8 +1503,8 @@ struct WeibullBuilder {
   void add_scale(flatbuffers::Offset<Tensor> scale) {
     fbb_.AddOffset(Weibull::VT_SCALE, scale);
   }
-  void add_concetration(flatbuffers::Offset<Tensor> concetration) {
-    fbb_.AddOffset(Weibull::VT_CONCETRATION, concetration);
+  void add_concentration(flatbuffers::Offset<Tensor> concentration) {
+    fbb_.AddOffset(Weibull::VT_CONCENTRATION, concentration);
   }
   explicit WeibullBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -1521,9 +1521,9 @@ struct WeibullBuilder {
 inline flatbuffers::Offset<Weibull> CreateWeibull(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<Tensor> scale = 0,
-    flatbuffers::Offset<Tensor> concetration = 0) {
+    flatbuffers::Offset<Tensor> concentration = 0) {
   WeibullBuilder builder_(_fbb);
-  builder_.add_concetration(concetration);
+  builder_.add_concentration(concentration);
   builder_.add_scale(scale);
   return builder_.Finish();
 }

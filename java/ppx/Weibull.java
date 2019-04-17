@@ -16,21 +16,21 @@ public final class Weibull extends Table {
 
   public Tensor scale() { return scale(new Tensor()); }
   public Tensor scale(Tensor obj) { int o = __offset(4); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
-  public Tensor concetration() { return concetration(new Tensor()); }
-  public Tensor concetration(Tensor obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
+  public Tensor concentration() { return concentration(new Tensor()); }
+  public Tensor concentration(Tensor obj) { int o = __offset(6); return o != 0 ? obj.__assign(__indirect(o + bb_pos), bb) : null; }
 
   public static int createWeibull(FlatBufferBuilder builder,
       int scaleOffset,
-      int concetrationOffset) {
+      int concentrationOffset) {
     builder.startObject(2);
-    Weibull.addConcetration(builder, concetrationOffset);
+    Weibull.addConcentration(builder, concentrationOffset);
     Weibull.addScale(builder, scaleOffset);
     return Weibull.endWeibull(builder);
   }
 
   public static void startWeibull(FlatBufferBuilder builder) { builder.startObject(2); }
   public static void addScale(FlatBufferBuilder builder, int scaleOffset) { builder.addOffset(0, scaleOffset, 0); }
-  public static void addConcetration(FlatBufferBuilder builder, int concetrationOffset) { builder.addOffset(1, concetrationOffset, 0); }
+  public static void addConcentration(FlatBufferBuilder builder, int concentrationOffset) { builder.addOffset(1, concentrationOffset, 0); }
   public static int endWeibull(FlatBufferBuilder builder) {
     int o = builder.endObject();
     return o;

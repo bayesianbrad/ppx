@@ -1770,7 +1770,7 @@ ppx.Weibull.prototype.scale = function(obj) {
  * @param {ppx.Tensor=} obj
  * @returns {ppx.Tensor|null}
  */
-ppx.Weibull.prototype.concetration = function(obj) {
+ppx.Weibull.prototype.concentration = function(obj) {
   var offset = this.bb.__offset(this.bb_pos, 6);
   return offset ? (obj || new ppx.Tensor).__init(this.bb.__indirect(this.bb_pos + offset), this.bb) : null;
 };
@@ -1792,10 +1792,10 @@ ppx.Weibull.addScale = function(builder, scaleOffset) {
 
 /**
  * @param {flatbuffers.Builder} builder
- * @param {flatbuffers.Offset} concetrationOffset
+ * @param {flatbuffers.Offset} concentrationOffset
  */
-ppx.Weibull.addConcetration = function(builder, concetrationOffset) {
-  builder.addFieldOffset(1, concetrationOffset, 0);
+ppx.Weibull.addConcentration = function(builder, concentrationOffset) {
+  builder.addFieldOffset(1, concentrationOffset, 0);
 };
 
 /**
