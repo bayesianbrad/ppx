@@ -8,8 +8,9 @@ class Distribution(object):
     Uniform = 2
     Categorical = 3
     Poisson = 4
-    Gamma = 5
-    LogNormal = 6
-    Exponential = 7
-    Weibull = 8
+    Beta = 5
+    Gamma = 6
+    LogNormal = 7
+    Exponential = 8
+    Weibull = 9
 

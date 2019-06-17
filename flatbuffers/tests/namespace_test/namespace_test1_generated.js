@@ -13,21 +13,12 @@ var NamespaceA = NamespaceA || {};
 NamespaceA.NamespaceB = NamespaceA.NamespaceB || {};
 
 /**
- * @enum {number}
+ * @enum
  */
 NamespaceA.NamespaceB.EnumInNestedNS = {
   A: 0,
   B: 1,
   C: 2
-};
-
-/**
- * @enum {string}
- */
-NamespaceA.NamespaceB.EnumInNestedNSName = {
-  0: 'A',
-  1: 'B',
-  2: 'C'
 };
 
 /**
@@ -62,15 +53,6 @@ NamespaceA.NamespaceB.TableInNestedNS.prototype.__init = function(i, bb) {
  * @returns {NamespaceA.NamespaceB.TableInNestedNS}
  */
 NamespaceA.NamespaceB.TableInNestedNS.getRootAsTableInNestedNS = function(bb, obj) {
-  return (obj || new NamespaceA.NamespaceB.TableInNestedNS).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @param {flatbuffers.ByteBuffer} bb
- * @param {NamespaceA.NamespaceB.TableInNestedNS=} obj
- * @returns {NamespaceA.NamespaceB.TableInNestedNS}
- */
-NamespaceA.NamespaceB.TableInNestedNS.getSizePrefixedRootAsTableInNestedNS = function(bb, obj) {
   return (obj || new NamespaceA.NamespaceB.TableInNestedNS).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 };
 
@@ -120,17 +102,6 @@ NamespaceA.NamespaceB.TableInNestedNS.endTableInNestedNS = function(builder) {
   var offset = builder.endObject();
   return offset;
 };
-
-/**
- * @param {flatbuffers.Builder} builder
- * @param {number} foo
- * @returns {flatbuffers.Offset}
- */
-NamespaceA.NamespaceB.TableInNestedNS.createTableInNestedNS = function(builder, foo) {
-  NamespaceA.NamespaceB.TableInNestedNS.startTableInNestedNS(builder);
-  NamespaceA.NamespaceB.TableInNestedNS.addFoo(builder, foo);
-  return NamespaceA.NamespaceB.TableInNestedNS.endTableInNestedNS(builder);
-}
 
 /**
  * @constructor

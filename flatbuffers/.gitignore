@@ -26,9 +26,6 @@
 **/install_manifest.txt
 **/CMakeCache.txt
 **/CMakeTestfile.cmake
-**/CPackConfig.cmake
-**/CPackSourceConfig.cmake
-**/compile_commands.json
 **/Debug/**
 **/Release/**
 **/RelWithDebInfo/**
@@ -49,8 +46,6 @@ flatsamplebinary
 flatsamplebinary.exe
 flatsampletext
 flatsampletext.exe
-flatsamplebfbs
-flatsamplebfbs.exe
 grpctest
 grpctest.exe
 snapshot.sh
@@ -114,5 +109,3 @@ dart/.dart_tool/
 dart/build/
 dart/doc/api/
 Cargo.lock
-.corpus**
-.seed**

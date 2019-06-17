@@ -4,8 +4,6 @@ package NamespaceC
 
 import (
 	flatbuffers "github.com/google/flatbuffers/go"
-
-	NamespaceA "NamespaceA"
 )
 
 type TableInC struct {
@@ -28,12 +26,12 @@ func (rcv *TableInC) Table() flatbuffers.Table {
 	return rcv._tab
 }
 
-func (rcv *TableInC) ReferToA1(obj *NamespaceA.TableInFirstNS) *NamespaceA.TableInFirstNS {
+func (rcv *TableInC) ReferToA1(obj *TableInFirstNS) *TableInFirstNS {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(4))
 	if o != 0 {
 		x := rcv._tab.Indirect(o + rcv._tab.Pos)
 		if obj == nil {
-			obj = new(NamespaceA.TableInFirstNS)
+			obj = new(TableInFirstNS)
 		}
 		obj.Init(rcv._tab.Bytes, x)
 		return obj
@@ -41,12 +39,12 @@ func (rcv *TableInC) ReferToA1(obj *NamespaceA.TableInFirstNS) *NamespaceA.Table
 	return nil
 }
 
-func (rcv *TableInC) ReferToA2(obj *NamespaceA.SecondTableInA) *NamespaceA.SecondTableInA {
+func (rcv *TableInC) ReferToA2(obj *SecondTableInA) *SecondTableInA {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(6))
 	if o != 0 {
 		x := rcv._tab.Indirect(o + rcv._tab.Pos)
 		if obj == nil {
-			obj = new(NamespaceA.SecondTableInA)
+			obj = new(SecondTableInA)
 		}
 		obj.Init(rcv._tab.Bytes, x)
 		return obj

@@ -96,13 +96,14 @@ std::string GenerateFBS(const Parser &parser, const std::string &file_name) {
     else
       schema += "enum " + enum_def.name + " : ";
     schema += GenType(enum_def.underlying_type, true) + " {\n";
-    for (auto it = enum_def.Vals().begin(); it != enum_def.Vals().end(); ++it) {
+    for (auto it = enum_def.vals.vec.begin(); it != enum_def.vals.vec.end();
+         ++it) {
       auto &ev = **it;
       GenComment(ev.doc_comment, &schema, nullptr, "  ");
       if (enum_def.is_union)
         schema += "  " + GenType(ev.union_type) + ",\n";
       else
-        schema += "  " + ev.name + " = " + enum_def.ToString(ev) + ",\n";
+        schema += "  " + ev.name + " = " + NumToString(ev.value) + ",\n";
     }
     schema += "}\n\n";
   }

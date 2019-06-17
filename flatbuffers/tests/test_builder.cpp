@@ -1,5 +1,3 @@
-#include "flatbuffers/stl_emulation.h"
-
 #include "monster_test_generated.h"
 #include "test_builder.h"
 
@@ -14,20 +12,13 @@ struct OwnedAllocator : public flatbuffers::DefaultAllocator {};
 
 class TestHeapBuilder : public flatbuffers::FlatBufferBuilder {
 private:
-  // clang-format off
-  #if !defined(FLATBUFFERS_CPP98_STL)
   TestHeapBuilder(const TestHeapBuilder &);
   TestHeapBuilder &operator=(const TestHeapBuilder &);
-  #endif  // !defined(FLATBUFFERS_CPP98_STL)
-  // clang-format on
 
 public:
   TestHeapBuilder()
     : flatbuffers::FlatBufferBuilder(2048, new OwnedAllocator(), true) {}
 
-  // clang-format off
-  #if !defined(FLATBUFFERS_CPP98_STL)
-  // clang-format on
   TestHeapBuilder(TestHeapBuilder &&other)
     : FlatBufferBuilder(std::move(other)) { }
 
@@ -35,9 +26,6 @@ public:
     FlatBufferBuilder::operator=(std::move(other));
     return *this;
   }
-  // clang-format off
-  #endif  // !defined(FLATBUFFERS_CPP98_STL)
-  // clang-format on
 };
 
 // This class simulates flatbuffers::grpc::detail::SliceAllocatorMember
@@ -61,18 +49,12 @@ public:
     Swap(other);
   }
 
-  // clang-format off
-  #if !defined(FLATBUFFERS_CPP98_STL)
-  // clang-format on
   GrpcLikeMessageBuilder &operator=(GrpcLikeMessageBuilder &&other) {
     // Construct temporary and swap idiom
     GrpcLikeMessageBuilder temp(std::move(other));
     Swap(temp);
     return *this;
   }
-  // clang-format off
-  #endif  // !defined(FLATBUFFERS_CPP98_STL)
-  // clang-format on
 
   void Swap(GrpcLikeMessageBuilder &other) {
     // No need to swap member_allocator_ because it's stateless.
@@ -129,9 +111,7 @@ bool release_n_verify(flatbuffers::FlatBufferBuilder &fbb, const std::string &ex
 }
 
 void FlatBufferBuilderTest() {
-  using flatbuffers::FlatBufferBuilder;
-
-  BuilderTests<FlatBufferBuilder>::all_tests();
+  BuilderTests<flatbuffers::FlatBufferBuilder>::all_tests();
   BuilderTests<TestHeapBuilder>::all_tests();
   BuilderTests<GrpcLikeMessageBuilder>::all_tests();
 
@@ -142,7 +122,7 @@ void FlatBufferBuilderTest() {
     REUSABLE_AFTER_RELEASE_RAW_AND_MOVE_ASSIGN
   };
 
-  BuilderReuseTests<FlatBufferBuilder, FlatBufferBuilder>::run_tests(TestSelector(tests, tests+4));
-  BuilderReuseTests<TestHeapBuilder, TestHeapBuilder>::run_tests(TestSelector(tests, tests+4));
-  BuilderReuseTests<GrpcLikeMessageBuilder, GrpcLikeMessageBuilder>::run_tests(TestSelector(tests, tests+4));
+  BuilderReuseTests<flatbuffers::FlatBufferBuilder>::run_tests(TestSelector(tests, tests+4));
+  BuilderReuseTests<TestHeapBuilder>::run_tests(TestSelector(tests, tests+4));
+  BuilderReuseTests<GrpcLikeMessageBuilder>::run_tests(TestSelector(tests, tests+4));
 }

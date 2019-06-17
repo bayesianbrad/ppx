@@ -10,10 +10,11 @@ class Distribution
     const Uniform = 2;
     const Categorical = 3;
     const Poisson = 4;
-    const Gamma = 5;
-    const LogNormal = 6;
-    const Exponential = 7;
-    const Weibull = 8;
+    const Beta = 5;
+    const Gamma = 6;
+    const LogNormal = 7;
+    const Exponential = 8;
+    const Weibull = 9;
 
     private static $names = array(
         "NONE",
@@ -21,6 +22,7 @@ class Distribution
         "Uniform",
         "Categorical",
         "Poisson",
+        "Beta",
         "Gamma",
         "LogNormal",
         "Exponential",

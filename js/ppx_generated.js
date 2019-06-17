@@ -33,10 +33,11 @@ ppx.Distribution = {
   Uniform: 2,
   Categorical: 3,
   Poisson: 4,
-  Gamma: 5,
-  LogNormal: 6,
-  Exponential: 7,
-  Weibull: 8
+  Beta: 5,
+  Gamma: 6,
+  LogNormal: 7,
+  Exponential: 8,
+  Weibull: 9
 };
 
 /**
@@ -1480,6 +1481,91 @@ ppx.Poisson.addRate = function(builder, rateOffset) {
  * @returns {flatbuffers.Offset}
  */
 ppx.Poisson.endPoisson = function(builder) {
+  var offset = builder.endObject();
+  return offset;
+};
+
+/**
+ * @constructor
+ */
+ppx.Beta = function() {
+  /**
+   * @type {flatbuffers.ByteBuffer}
+   */
+  this.bb = null;
+
+  /**
+   * @type {number}
+   */
+  this.bb_pos = 0;
+};
+
+/**
+ * @param {number} i
+ * @param {flatbuffers.ByteBuffer} bb
+ * @returns {ppx.Beta}
+ */
+ppx.Beta.prototype.__init = function(i, bb) {
+  this.bb_pos = i;
+  this.bb = bb;
+  return this;
+};
+
+/**
+ * @param {flatbuffers.ByteBuffer} bb
+ * @param {ppx.Beta=} obj
+ * @returns {ppx.Beta}
+ */
+ppx.Beta.getRootAsBeta = function(bb, obj) {
+  return (obj || new ppx.Beta).__init(bb.readInt32(bb.position()) + bb.position(), bb);
+};
+
+/**
+ * @param {ppx.Tensor=} obj
+ * @returns {ppx.Tensor|null}
+ */
+ppx.Beta.prototype.low = function(obj) {
+  var offset = this.bb.__offset(this.bb_pos, 4);
+  return offset ? (obj || new ppx.Tensor).__init(this.bb.__indirect(this.bb_pos + offset), this.bb) : null;
+};
+
+/**
+ * @param {ppx.Tensor=} obj
+ * @returns {ppx.Tensor|null}
+ */
+ppx.Beta.prototype.high = function(obj) {
+  var offset = this.bb.__offset(this.bb_pos, 6);
+  return offset ? (obj || new ppx.Tensor).__init(this.bb.__indirect(this.bb_pos + offset), this.bb) : null;
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ */
+ppx.Beta.startBeta = function(builder) {
+  builder.startObject(2);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} lowOffset
+ */
+ppx.Beta.addLow = function(builder, lowOffset) {
+  builder.addFieldOffset(0, lowOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @param {flatbuffers.Offset} highOffset
+ */
+ppx.Beta.addHigh = function(builder, highOffset) {
+  builder.addFieldOffset(1, highOffset, 0);
+};
+
+/**
+ * @param {flatbuffers.Builder} builder
+ * @returns {flatbuffers.Offset}
+ */
+ppx.Beta.endBeta = function(builder) {
   var offset = builder.endObject();
   return offset;
 };

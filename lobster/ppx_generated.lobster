@@ -24,10 +24,11 @@ enum +
     Distribution_Uniform = 2,
     Distribution_Categorical = 3,
     Distribution_Poisson = 4,
-    Distribution_Gamma = 5,
-    Distribution_LogNormal = 6,
-    Distribution_Exponential = 7,
-    Distribution_Weibull = 8
+    Distribution_Beta = 5,
+    Distribution_Gamma = 6,
+    Distribution_LogNormal = 7,
+    Distribution_Exponential = 8,
+    Distribution_Weibull = 9
 
 struct Message
 
@@ -62,6 +63,8 @@ struct Uniform
 struct Categorical
 
 struct Poisson
+
+struct Beta
 
 struct Gamma
 
@@ -209,6 +212,8 @@ struct Sample : flatbuffers_handle
         ppx_Categorical { buf_, buf_.flatbuffers_field_table(pos_, 10) }
     def distribution_as_Poisson():
         ppx_Poisson { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_Beta():
+        ppx_Beta { buf_, buf_.flatbuffers_field_table(pos_, 10) }
     def distribution_as_Gamma():
         ppx_Gamma { buf_, buf_.flatbuffers_field_table(pos_, 10) }
     def distribution_as_LogNormal():
@@ -270,6 +275,8 @@ struct Observe : flatbuffers_handle
         ppx_Categorical { buf_, buf_.flatbuffers_field_table(pos_, 10) }
     def distribution_as_Poisson():
         ppx_Poisson { buf_, buf_.flatbuffers_field_table(pos_, 10) }
+    def distribution_as_Beta():
+        ppx_Beta { buf_, buf_.flatbuffers_field_table(pos_, 10) }
     def distribution_as_Gamma():
         ppx_Gamma { buf_, buf_.flatbuffers_field_table(pos_, 10) }
     def distribution_as_LogNormal():
@@ -412,6 +419,25 @@ def PoissonStart(b_:flatbuffers_builder):
 def PoissonAddRate(b_:flatbuffers_builder, rate:int):
     b_.PrependUOffsetTRelativeSlot(0, rate, 0)
 def PoissonEnd(b_:flatbuffers_builder):
+    b_.EndObject()
+
+struct Beta : flatbuffers_handle
+    def low():
+        o := buf_.flatbuffers_field_table(pos_, 4)
+        if o: ppx_Tensor { buf_, o } else: nil
+    def high():
+        o := buf_.flatbuffers_field_table(pos_, 6)
+        if o: ppx_Tensor { buf_, o } else: nil
+
+def GetRootAsBeta(buf:string): Beta { buf, buf.flatbuffers_indirect(0) }
+
+def BetaStart(b_:flatbuffers_builder):
+    b_.StartObject(2)
+def BetaAddLow(b_:flatbuffers_builder, low:int):
+    b_.PrependUOffsetTRelativeSlot(0, low, 0)
+def BetaAddHigh(b_:flatbuffers_builder, high:int):
+    b_.PrependUOffsetTRelativeSlot(1, high, 0)
+def BetaEnd(b_:flatbuffers_builder):
     b_.EndObject()
 
 struct Gamma : flatbuffers_handle

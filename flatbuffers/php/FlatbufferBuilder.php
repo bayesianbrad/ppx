@@ -21,7 +21,7 @@
 
 namespace Google\FlatBuffers;
 
-final class FlatbufferBuilder
+class FlatbufferBuilder
 {
     /**
      * Internal ByteBuffer for the FlatBuffer data.
@@ -277,15 +277,6 @@ final class FlatbufferBuilder
     public function putDouble($x)
     {
         $this->bb->putDouble($this->space -= 8, $x);
-    }
-
-    /**
-     * @param $off
-     */
-    public function putOffset($off)
-    {
-        $new_off = $this->offset() - $off + Constants::SIZEOF_INT;
-        $this->putInt($new_off);
     }
     /// @endcond
 
@@ -571,7 +562,9 @@ final class FlatbufferBuilder
         if ($off > $this->offset()) {
             throw new \Exception("");
         }
-        $this->putOffset($off);
+
+        $off = $this->offset() - $off + Constants::SIZEOF_INT;
+        $this->putInt($off);
     }
 
     /// @cond FLATBUFFERS_INTERNAL

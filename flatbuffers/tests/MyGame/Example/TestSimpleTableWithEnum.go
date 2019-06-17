@@ -26,23 +26,23 @@ func (rcv *TestSimpleTableWithEnum) Table() flatbuffers.Table {
 	return rcv._tab
 }
 
-func (rcv *TestSimpleTableWithEnum) Color() Color {
+func (rcv *TestSimpleTableWithEnum) Color() int8 {
 	o := flatbuffers.UOffsetT(rcv._tab.Offset(4))
 	if o != 0 {
-		return Color(rcv._tab.GetByte(o + rcv._tab.Pos))
+		return rcv._tab.GetInt8(o + rcv._tab.Pos)
 	}
 	return 2
 }
 
-func (rcv *TestSimpleTableWithEnum) MutateColor(n Color) bool {
-	return rcv._tab.MutateByteSlot(4, byte(n))
+func (rcv *TestSimpleTableWithEnum) MutateColor(n int8) bool {
+	return rcv._tab.MutateInt8Slot(4, n)
 }
 
 func TestSimpleTableWithEnumStart(builder *flatbuffers.Builder) {
 	builder.StartObject(1)
 }
-func TestSimpleTableWithEnumAddColor(builder *flatbuffers.Builder, color Color) {
-	builder.PrependByteSlot(0, byte(color), 2)
+func TestSimpleTableWithEnumAddColor(builder *flatbuffers.Builder, color int8) {
+	builder.PrependInt8Slot(0, color, 2)
 }
 func TestSimpleTableWithEnumEnd(builder *flatbuffers.Builder) flatbuffers.UOffsetT {
 	return builder.EndObject()

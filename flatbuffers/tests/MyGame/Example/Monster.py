@@ -4,7 +4,7 @@
 
 import flatbuffers
 
-# an example documentation comment: monster object
+# /// an example documentation comment: monster object
 class Monster(object):
     __slots__ = ['_tab']
 
@@ -77,7 +77,7 @@ class Monster(object):
     def Color(self):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(16))
         if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
+            return self._tab.Get(flatbuffers.number_types.Int8Flags, o + self._tab.Pos)
         return 8
 
     # Monster
@@ -131,8 +131,8 @@ class Monster(object):
             return self._tab.VectorLen(o)
         return 0
 
-    # an example documentation comment: this will end up in the generated code
-    # multiline too
+# /// an example documentation comment: this will end up in the generated code
+# /// multiline too
     # Monster
     def Testarrayoftables(self, j):
         o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(26))
@@ -560,70 +560,14 @@ class Monster(object):
             return self._tab.VectorLen(o)
         return 0
 
-    # Monster
-    def AnyUniqueType(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(90))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
-        return 0
-
-    # Monster
-    def AnyUnique(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(92))
-        if o != 0:
-            from flatbuffers.table import Table
-            obj = Table(bytearray(), 0)
-            self._tab.Union(obj, o)
-            return obj
-        return None
-
-    # Monster
-    def AnyAmbiguousType(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(94))
-        if o != 0:
-            return self._tab.Get(flatbuffers.number_types.Uint8Flags, o + self._tab.Pos)
-        return 0
-
-    # Monster
-    def AnyAmbiguous(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(96))
-        if o != 0:
-            from flatbuffers.table import Table
-            obj = Table(bytearray(), 0)
-            self._tab.Union(obj, o)
-            return obj
-        return None
-
-    # Monster
-    def VectorOfEnums(self, j):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(98))
-        if o != 0:
-            a = self._tab.Vector(o)
-            return self._tab.Get(flatbuffers.number_types.Uint8Flags, a + flatbuffers.number_types.UOffsetTFlags.py_type(j * 1))
-        return 0
-
-    # Monster
-    def VectorOfEnumsAsNumpy(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(98))
-        if o != 0:
-            return self._tab.GetVectorAsNumpy(flatbuffers.number_types.Uint8Flags, o)
-        return 0
-
-    # Monster
-    def VectorOfEnumsLength(self):
-        o = flatbuffers.number_types.UOffsetTFlags.py_type(self._tab.Offset(98))
-        if o != 0:
-            return self._tab.VectorLen(o)
-        return 0
-
-def MonsterStart(builder): builder.StartObject(48)
+def MonsterStart(builder): builder.StartObject(43)
 def MonsterAddPos(builder, pos): builder.PrependStructSlot(0, flatbuffers.number_types.UOffsetTFlags.py_type(pos), 0)
 def MonsterAddMana(builder, mana): builder.PrependInt16Slot(1, mana, 150)
 def MonsterAddHp(builder, hp): builder.PrependInt16Slot(2, hp, 100)
 def MonsterAddName(builder, name): builder.PrependUOffsetTRelativeSlot(3, flatbuffers.number_types.UOffsetTFlags.py_type(name), 0)
 def MonsterAddInventory(builder, inventory): builder.PrependUOffsetTRelativeSlot(5, flatbuffers.number_types.UOffsetTFlags.py_type(inventory), 0)
 def MonsterStartInventoryVector(builder, numElems): return builder.StartVector(1, numElems, 1)
-def MonsterAddColor(builder, color): builder.PrependUint8Slot(6, color, 8)
+def MonsterAddColor(builder, color): builder.PrependInt8Slot(6, color, 8)
 def MonsterAddTestType(builder, testType): builder.PrependUint8Slot(7, testType, 0)
 def MonsterAddTest(builder, test): builder.PrependUOffsetTRelativeSlot(8, flatbuffers.number_types.UOffsetTFlags.py_type(test), 0)
 def MonsterAddTest4(builder, test4): builder.PrependUOffsetTRelativeSlot(9, flatbuffers.number_types.UOffsetTFlags.py_type(test4), 0)
@@ -676,10 +620,4 @@ def MonsterStartVectorOfCoOwningReferencesVector(builder, numElems): return buil
 def MonsterAddNonOwningReference(builder, nonOwningReference): builder.PrependUint64Slot(41, nonOwningReference, 0)
 def MonsterAddVectorOfNonOwningReferences(builder, vectorOfNonOwningReferences): builder.PrependUOffsetTRelativeSlot(42, flatbuffers.number_types.UOffsetTFlags.py_type(vectorOfNonOwningReferences), 0)
 def MonsterStartVectorOfNonOwningReferencesVector(builder, numElems): return builder.StartVector(8, numElems, 8)
-def MonsterAddAnyUniqueType(builder, anyUniqueType): builder.PrependUint8Slot(43, anyUniqueType, 0)
-def MonsterAddAnyUnique(builder, anyUnique): builder.PrependUOffsetTRelativeSlot(44, flatbuffers.number_types.UOffsetTFlags.py_type(anyUnique), 0)
-def MonsterAddAnyAmbiguousType(builder, anyAmbiguousType): builder.PrependUint8Slot(45, anyAmbiguousType, 0)
-def MonsterAddAnyAmbiguous(builder, anyAmbiguous): builder.PrependUOffsetTRelativeSlot(46, flatbuffers.number_types.UOffsetTFlags.py_type(anyAmbiguous), 0)
-def MonsterAddVectorOfEnums(builder, vectorOfEnums): builder.PrependUOffsetTRelativeSlot(47, flatbuffers.number_types.UOffsetTFlags.py_type(vectorOfEnums), 0)
-def MonsterStartVectorOfEnumsVector(builder, numElems): return builder.StartVector(1, numElems, 1)
 def MonsterEnd(builder): return builder.EndObject()

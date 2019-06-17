@@ -21,9 +21,8 @@ from . import packer
 from . import compat
 from .compat import range_func
 from .compat import memoryview_type
-from .compat import import_numpy, NumpyRequiredForThisFeature
 
-np = import_numpy()
+
 ## @file
 ## @addtogroup flatbuffers_python_api
 ## @{
@@ -94,7 +93,7 @@ class Builder(object):
     It holds the following internal state:
         - Bytes: an array of bytes.
         - current_vtable: a list of integers.
-        - vtables: a hash of vtable entries.
+        - vtables: a list of vtable entries (i.e. a list of list of integers).
 
     Attributes:
       Bytes: The internal `bytearray` for the Builder.
@@ -129,7 +128,7 @@ class Builder(object):
         self.head = UOffsetTFlags.py_type(initialSize)
         self.minalign = 1
         self.objectEnd = None
-        self.vtables = {}
+        self.vtables = []
         self.nested = False
         ## @endcond
         self.finished = False
@@ -191,45 +190,52 @@ class Builder(object):
         self.PrependSOffsetTRelative(0)
 
         objectOffset = self.Offset()
+        existingVtable = None
 
-        vtKey = []
-        trim = True
-        for elem in reversed(self.current_vtable):
-            if elem == 0:
-                if trim:
-                    continue
-            else:
-                elem = objectOffset - elem
-                trim = False
+        # Trim trailing 0 offsets.
+        while self.current_vtable and self.current_vtable[-1] == 0:
+            self.current_vtable.pop()
 
-            vtKey.append(elem)
+        # Search backwards through existing vtables, because similar vtables
+        # are likely to have been recently appended. See
+        # BenchmarkVtableDeduplication for a case in which this heuristic
+        # saves about 30% of the time used in writing objects with duplicate
+        # tables.
 
-        vtKey = tuple(vtKey)
-        vt2Offset = self.vtables.get(vtKey)
-        if vt2Offset is None:
+        i = len(self.vtables) - 1
+        while i >= 0:
+            # Find the other vtable, which is associated with `i`:
+            vt2Offset = self.vtables[i]
+            vt2Start = len(self.Bytes) - vt2Offset
+            vt2Len = encode.Get(packer.voffset, self.Bytes, vt2Start)
+
+            metadata = VtableMetadataFields * N.VOffsetTFlags.bytewidth
+            vt2End = vt2Start + vt2Len
+            vt2 = self.Bytes[vt2Start+metadata:vt2End]
+
+            # Compare the other vtable to the one under consideration.
+            # If they are equal, store the offset and break:
+            if vtableEqual(self.current_vtable, objectOffset, vt2):
+                existingVtable = vt2Offset
+                break
+
+            i -= 1
+
+        if existingVtable is None:
             # Did not find a vtable, so write this one to the buffer.
 
             # Write out the current vtable in reverse , because
             # serialization occurs in last-first order:
             i = len(self.current_vtable) - 1
-            trailing = 0
-            trim = True
             while i >= 0:
                 off = 0
-                elem = self.current_vtable[i]
-                i -= 1
-
-                if elem == 0:
-                    if trim:
-                        trailing += 1
-                        continue
-                else:
+                if self.current_vtable[i] != 0:
                     # Forward reference to field;
                     # use 32bit number to ensure no overflow:
-                    off = objectOffset - elem
-                    trim = False
+                    off = objectOffset - self.current_vtable[i]
 
                 self.PrependVOffsetT(off)
+                i -= 1
 
             # The two metadata fields are written last.
 
@@ -238,7 +244,7 @@ class Builder(object):
             self.PrependVOffsetT(VOffsetTFlags.py_type(objectSize))
 
             # Second, store the vtable bytesize:
-            vBytes = len(self.current_vtable) - trailing + VtableMetadataFields
+            vBytes = len(self.current_vtable) + VtableMetadataFields
             vBytes *= N.VOffsetTFlags.bytewidth
             self.PrependVOffsetT(VOffsetTFlags.py_type(vBytes))
 
@@ -250,16 +256,17 @@ class Builder(object):
 
             # Finally, store this vtable in memory for future
             # deduplication:
-            self.vtables[vtKey] = self.Offset()
+            self.vtables.append(self.Offset())
         else:
             # Found a duplicate vtable.
+
             objectStart = SOffsetTFlags.py_type(len(self.Bytes) - objectOffset)
             self.head = UOffsetTFlags.py_type(objectStart)
 
             # Write the offset to the found vtable in the
             # already-allocated SOffsetT at the beginning of this object:
             encode.Write(packer.soffset, self.Bytes, self.Head(),
-                         SOffsetTFlags.py_type(vt2Offset - objectOffset))
+                         SOffsetTFlags.py_type(existingVtable - objectOffset))
 
         self.current_vtable = None
         return objectOffset
@@ -433,41 +440,6 @@ class Builder(object):
         self.Bytes[self.Head():self.Head()+l] = x
 
         return self.EndVector(len(x))
-
-    def CreateNumpyVector(self, x):
-        """CreateNumpyVector writes a numpy array into the buffer."""
-
-        if np is None:
-            # Numpy is required for this feature
-            raise NumpyRequiredForThisFeature("Numpy was not found.")
-
-        if not isinstance(x, np.ndarray):
-            raise TypeError("non-numpy-ndarray passed to CreateNumpyVector")
-
-        if x.dtype.kind not in ['b', 'i', 'u', 'f']:
-            raise TypeError("numpy-ndarray holds elements of unsupported datatype")
-
-        if x.ndim > 1:
-            raise TypeError("multidimensional-ndarray passed to CreateNumpyVector")
-
-        self.StartVector(x.itemsize, x.size, x.dtype.alignment)
-
-        # Ensure little endian byte ordering
-        if x.dtype.str[0] == "<":
-            x_lend = x
-        else:
-            x_lend = x.byteswap(inplace=False)
-
-        # Calculate total length
-        l = UOffsetTFlags.py_type(x_lend.itemsize * x_lend.size)
-        ## @cond FLATBUFFERS_INTERNAL
-        self.head = UOffsetTFlags.py_type(self.Head() - l)
-        ## @endcond
-
-        # tobytes ensures c_contiguous ordering
-        self.Bytes[self.Head():self.Head()+l] = x_lend.tobytes(order='C')
-        
-        return self.EndVector(x.size)
 
     ## @cond FLATBUFFERS_INTERNAL
     def assertNested(self):

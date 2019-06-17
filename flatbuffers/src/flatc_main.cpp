@@ -15,7 +15,6 @@
  */
 
 #include "flatbuffers/flatc.h"
-#include "flatbuffers/util.h"
 
 static const char *g_program_name = nullptr;
 
@@ -35,9 +34,6 @@ static void Error(const flatbuffers::FlatCompiler *flatc,
 }
 
 int main(int argc, const char *argv[]) {
-  // Prevent Appveyor-CI hangs.
-  flatbuffers::SetupDefaultCRTReportMode();
-
   g_program_name = argv[0];
 
   const flatbuffers::FlatCompiler::Generator generators[] = {
@@ -59,15 +55,15 @@ int main(int argc, const char *argv[]) {
       flatbuffers::GenerateJavaGRPC, flatbuffers::IDLOptions::kJava,
       "Generate Java classes for tables/structs",
       flatbuffers::GeneralMakeRule },
-    { flatbuffers::GenerateJSTS, "-s", "--js", "JavaScript", true, nullptr,
+    { flatbuffers::GenerateJS, "-s", "--js", "JavaScript", true, nullptr,
       flatbuffers::IDLOptions::kJs,
-      "Generate JavaScript code for tables/structs", flatbuffers::JSTSMakeRule },
+      "Generate JavaScript code for tables/structs", flatbuffers::JSMakeRule },
     { flatbuffers::GenerateDart, "-d", "--dart", "Dart", true, nullptr,
       flatbuffers::IDLOptions::kDart,
       "Generate Dart classes for tables/structs", flatbuffers::DartMakeRule },
-    { flatbuffers::GenerateJSTS, "-T", "--ts", "TypeScript", true, nullptr,
+    { flatbuffers::GenerateJS, "-T", "--ts", "TypeScript", true, nullptr,
       flatbuffers::IDLOptions::kTs,
-      "Generate TypeScript code for tables/structs", flatbuffers::JSTSMakeRule },
+      "Generate TypeScript code for tables/structs", flatbuffers::JSMakeRule },
     { flatbuffers::GenerateGeneral, "-n", "--csharp", "C#", true, nullptr,
       flatbuffers::IDLOptions::kCSharp,
       "Generate C# classes for tables/structs", flatbuffers::GeneralMakeRule },

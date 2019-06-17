@@ -11,7 +11,6 @@ public final class Rapunzel extends Struct {
   public Rapunzel __assign(int _i, ByteBuffer _bb) { __init(_i, _bb); return this; }
 
   public int hairLength() { return bb.getInt(bb_pos + 0); }
-  public void mutateHairLength(int hair_length) { bb.putInt(bb_pos + 0, hair_length); }
 
   public static int createRapunzel(FlatBufferBuilder builder, int hairLength) {
     builder.prep(4, 4);

@@ -12,13 +12,13 @@ class Character
     const Unused = 6;
 
     private static $names = array(
-        Character::NONE=>"NONE",
-        Character::MuLan=>"MuLan",
-        Character::Rapunzel=>"Rapunzel",
-        Character::Belle=>"Belle",
-        Character::BookFan=>"BookFan",
-        Character::Other=>"Other",
-        Character::Unused=>"Unused",
+        "NONE",
+        "MuLan",
+        "Rapunzel",
+        "Belle",
+        "BookFan",
+        "Other",
+        "Unused",
     );
 
     public static function Name($e)

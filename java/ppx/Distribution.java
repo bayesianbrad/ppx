@@ -9,12 +9,13 @@ public final class Distribution {
   public static final byte Uniform = 2;
   public static final byte Categorical = 3;
   public static final byte Poisson = 4;
-  public static final byte Gamma = 5;
-  public static final byte LogNormal = 6;
-  public static final byte Exponential = 7;
-  public static final byte Weibull = 8;
+  public static final byte Beta = 5;
+  public static final byte Gamma = 6;
+  public static final byte LogNormal = 7;
+  public static final byte Exponential = 8;
+  public static final byte Weibull = 9;
 
-  public static final String[] names = { "NONE", "Normal", "Uniform", "Categorical", "Poisson", "Gamma", "LogNormal", "Exponential", "Weibull", };
+  public static final String[] names = { "NONE", "Normal", "Uniform", "Categorical", "Poisson", "Beta", "Gamma", "LogNormal", "Exponential", "Weibull", };
 
   public static String name(int e) { return names[e]; }
 }

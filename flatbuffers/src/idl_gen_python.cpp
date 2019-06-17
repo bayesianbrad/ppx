@@ -29,7 +29,6 @@ namespace flatbuffers {
 namespace python {
 
 // Hardcode spaces per indentation.
-const CommentConfig def_comment = { nullptr, "#", nullptr };
 const std::string Indent = "    ";
 
 class PythonGenerator : public BaseGenerator {
@@ -37,8 +36,7 @@ class PythonGenerator : public BaseGenerator {
   PythonGenerator(const Parser &parser, const std::string &path,
                   const std::string &file_name)
       : BaseGenerator(parser, path, file_name, "" /* not used */,
-                      "" /* not used */),
-        float_const_gen_("float('nan')", "float('inf')", "float('-inf')") {
+                      "" /* not used */){
     static const char * const keywords[] = {
       "False",
       "None",
@@ -113,13 +111,12 @@ class PythonGenerator : public BaseGenerator {
   }
 
   // A single enum member.
-  void EnumMember(const EnumDef &enum_def, const EnumVal &ev,
-                  std::string *code_ptr) {
+  void EnumMember(const EnumVal ev, std::string *code_ptr) {
     std::string &code = *code_ptr;
     code += Indent;
     code += NormalizedName(ev);
     code += " = ";
-    code += enum_def.ToString(ev) + "\n";
+    code += NumToString(ev.value) + "\n";
   }
 
   // End enum code.
@@ -194,7 +191,7 @@ class PythonGenerator : public BaseGenerator {
     code += "(self):";
     code += OffsetPrefix(field);
     getter += "o + self._tab.Pos)";
-    auto is_bool = IsBool(field.value.type.base_type);
+    auto is_bool = field.value.type.base_type == BASE_TYPE_BOOL;
     if (is_bool) {
       getter = "bool(" + getter + ")";
     }
@@ -203,9 +200,7 @@ class PythonGenerator : public BaseGenerator {
     if (is_bool) {
       default_value = field.value.constant == "0" ? "False" : "True";
     } else {
-      default_value = IsFloat(field.value.type.base_type)
-                          ? float_const_gen_.GenFloatConstant(field)
-                          : field.value.constant;
+      default_value = field.value.constant;
     }
     code += Indent + Indent + "return " + default_value + "\n\n";
   }
@@ -388,7 +383,7 @@ class PythonGenerator : public BaseGenerator {
                           (nameprefix + (NormalizedName(field) + "_")).c_str(), code_ptr);
       } else {
         std::string &code = *code_ptr;
-        code += std::string(", ") + nameprefix;
+        code += (std::string) ", " + nameprefix;
         code += MakeCamel(NormalizedName(field), false);
       }
     }
@@ -457,10 +452,7 @@ class PythonGenerator : public BaseGenerator {
     } else {
       code += MakeCamel(NormalizedName(field), false);
     }
-    code += ", ";
-    code += IsFloat(field.value.type.base_type)
-                ? float_const_gen_.GenFloatConstant(field)
-                : field.value.constant;
+    code += ", " + field.value.constant;
     code += ")\n";
   }
 
@@ -498,7 +490,7 @@ class PythonGenerator : public BaseGenerator {
   // Generate a struct field, conditioned on its child type(s).
   void GenStructAccessor(const StructDef &struct_def,
                          const FieldDef &field, std::string *code_ptr) {
-    GenComment(field.doc_comment, code_ptr, &def_comment, Indent.c_str());
+    GenComment(field.doc_comment, code_ptr, nullptr, "# ");
     if (IsScalar(field.value.type.base_type)) {
       if (struct_def.fixed) {
         GetScalarFieldOfStruct(struct_def, field, code_ptr);
@@ -558,7 +550,7 @@ class PythonGenerator : public BaseGenerator {
   void GenStruct(const StructDef &struct_def, std::string *code_ptr) {
     if (struct_def.generated) return;
 
-    GenComment(struct_def.doc_comment, code_ptr, &def_comment);
+    GenComment(struct_def.doc_comment, code_ptr, nullptr, "# ");
     BeginClass(struct_def, code_ptr);
     if (!struct_def.fixed) {
       // Generate a special accessor for the table that has been declared as
@@ -589,12 +581,13 @@ class PythonGenerator : public BaseGenerator {
   void GenEnum(const EnumDef &enum_def, std::string *code_ptr) {
     if (enum_def.generated) return;
 
-    GenComment(enum_def.doc_comment, code_ptr, &def_comment);
+    GenComment(enum_def.doc_comment, code_ptr, nullptr, "# ");
     BeginEnum(NormalizedName(enum_def), code_ptr);
-    for (auto it = enum_def.Vals().begin(); it != enum_def.Vals().end(); ++it) {
+    for (auto it = enum_def.vals.vec.begin(); it != enum_def.vals.vec.end();
+        ++it) {
       auto &ev = **it;
-      GenComment(ev.doc_comment, code_ptr, &def_comment, Indent.c_str());
-      EnumMember(enum_def, ev, code_ptr);
+      GenComment(ev.doc_comment, code_ptr, nullptr, "# ");
+      EnumMember(ev, code_ptr);
     }
     EndEnum(code_ptr);
   }
@@ -722,7 +715,6 @@ class PythonGenerator : public BaseGenerator {
   }
  private:
   std::unordered_set<std::string> keywords_;
-  const SimpleFloatConstantGenerator float_const_gen_;
 };
 
 }  // namespace python

@@ -326,7 +326,7 @@ class TypeAliases extends Table
     {
         $builder->startVector(1, count($data), 1);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->putSbyte($data[$i]);
+            $builder->addSbyte($data[$i]);
         }
         return $builder->endVector();
     }
@@ -360,7 +360,7 @@ class TypeAliases extends Table
     {
         $builder->startVector(8, count($data), 8);
         for ($i = count($data) - 1; $i >= 0; $i--) {
-            $builder->putDouble($data[$i]);
+            $builder->addDouble($data[$i]);
         }
         return $builder->endVector();
     }

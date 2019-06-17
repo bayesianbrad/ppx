@@ -115,15 +115,16 @@ pub enum Distribution {
   Uniform = 2,
   Categorical = 3,
   Poisson = 4,
-  Gamma = 5,
-  LogNormal = 6,
-  Exponential = 7,
-  Weibull = 8,
+  Beta = 5,
+  Gamma = 6,
+  LogNormal = 7,
+  Exponential = 8,
+  Weibull = 9,
 
 }
 
 const ENUM_MIN_DISTRIBUTION: u8 = 0;
-const ENUM_MAX_DISTRIBUTION: u8 = 8;
+const ENUM_MAX_DISTRIBUTION: u8 = 9;
 
 impl<'a> flatbuffers::Follow<'a> for Distribution {
   type Inner = Self;
@@ -157,12 +158,13 @@ impl flatbuffers::Push for Distribution {
 }
 
 #[allow(non_camel_case_types)]
-const ENUM_VALUES_DISTRIBUTION:[Distribution; 9] = [
+const ENUM_VALUES_DISTRIBUTION:[Distribution; 10] = [
   Distribution::NONE,
   Distribution::Normal,
   Distribution::Uniform,
   Distribution::Categorical,
   Distribution::Poisson,
+  Distribution::Beta,
   Distribution::Gamma,
   Distribution::LogNormal,
   Distribution::Exponential,
@@ -170,12 +172,13 @@ const ENUM_VALUES_DISTRIBUTION:[Distribution; 9] = [
 ];
 
 #[allow(non_camel_case_types)]
-const ENUM_NAMES_DISTRIBUTION:[&'static str; 9] = [
+const ENUM_NAMES_DISTRIBUTION:[&'static str; 10] = [
     "NONE",
     "Normal",
     "Uniform",
     "Categorical",
     "Poisson",
+    "Beta",
     "Gamma",
     "LogNormal",
     "Exponential",
@@ -888,6 +891,16 @@ impl<'a> Sample<'a> {
 
   #[inline]
   #[allow(non_snake_case)]
+  pub fn distribution_as_beta(&'a self) -> Option<Beta> {
+    if self.distribution_type() == Distribution::Beta {
+      self.distribution().map(|u| Beta::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
   pub fn distribution_as_gamma(&'a self) -> Option<Gamma> {
     if self.distribution_type() == Distribution::Gamma {
       self.distribution().map(|u| Gamma::init_from_table(u))
@@ -1167,6 +1180,16 @@ impl<'a> Observe<'a> {
   pub fn distribution_as_poisson(&'a self) -> Option<Poisson> {
     if self.distribution_type() == Distribution::Poisson {
       self.distribution().map(|u| Poisson::init_from_table(u))
+    } else {
+      None
+    }
+  }
+
+  #[inline]
+  #[allow(non_snake_case)]
+  pub fn distribution_as_beta(&'a self) -> Option<Beta> {
+    if self.distribution_type() == Distribution::Beta {
+      self.distribution().map(|u| Beta::init_from_table(u))
     } else {
       None
     }
@@ -1885,6 +1908,94 @@ impl<'a: 'b, 'b> PoissonBuilder<'a, 'b> {
   }
   #[inline]
   pub fn finish(self) -> flatbuffers::WIPOffset<Poisson<'a>> {
+    let o = self.fbb_.end_table(self.start_);
+    flatbuffers::WIPOffset::new(o.value())
+  }
+}
+
+pub enum BetaOffset {}
+#[derive(Copy, Clone, Debug, PartialEq)]
+
+pub struct Beta<'a> {
+  pub _tab: flatbuffers::Table<'a>,
+}
+
+impl<'a> flatbuffers::Follow<'a> for Beta<'a> {
+    type Inner = Beta<'a>;
+    #[inline]
+    fn follow(buf: &'a [u8], loc: usize) -> Self::Inner {
+        Self {
+            _tab: flatbuffers::Table { buf: buf, loc: loc },
+        }
+    }
+}
+
+impl<'a> Beta<'a> {
+    #[inline]
+    pub fn init_from_table(table: flatbuffers::Table<'a>) -> Self {
+        Beta {
+            _tab: table,
+        }
+    }
+    #[allow(unused_mut)]
+    pub fn create<'bldr: 'args, 'args: 'mut_bldr, 'mut_bldr>(
+        _fbb: &'mut_bldr mut flatbuffers::FlatBufferBuilder<'bldr>,
+        args: &'args BetaArgs<'args>) -> flatbuffers::WIPOffset<Beta<'bldr>> {
+      let mut builder = BetaBuilder::new(_fbb);
+      if let Some(x) = args.high { builder.add_high(x); }
+      if let Some(x) = args.low { builder.add_low(x); }
+      builder.finish()
+    }
+
+    pub const VT_LOW: flatbuffers::VOffsetT = 4;
+    pub const VT_HIGH: flatbuffers::VOffsetT = 6;
+
+  #[inline]
+  pub fn low(&self) -> Option<Tensor<'a>> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<Tensor<'a>>>(Beta::VT_LOW, None)
+  }
+  #[inline]
+  pub fn high(&self) -> Option<Tensor<'a>> {
+    self._tab.get::<flatbuffers::ForwardsUOffset<Tensor<'a>>>(Beta::VT_HIGH, None)
+  }
+}
+
+pub struct BetaArgs<'a> {
+    pub low: Option<flatbuffers::WIPOffset<Tensor<'a >>>,
+    pub high: Option<flatbuffers::WIPOffset<Tensor<'a >>>,
+}
+impl<'a> Default for BetaArgs<'a> {
+    #[inline]
+    fn default() -> Self {
+        BetaArgs {
+            low: None,
+            high: None,
+        }
+    }
+}
+pub struct BetaBuilder<'a: 'b, 'b> {
+  fbb_: &'b mut flatbuffers::FlatBufferBuilder<'a>,
+  start_: flatbuffers::WIPOffset<flatbuffers::TableUnfinishedWIPOffset>,
+}
+impl<'a: 'b, 'b> BetaBuilder<'a, 'b> {
+  #[inline]
+  pub fn add_low(&mut self, low: flatbuffers::WIPOffset<Tensor<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<Tensor>>(Beta::VT_LOW, low);
+  }
+  #[inline]
+  pub fn add_high(&mut self, high: flatbuffers::WIPOffset<Tensor<'b >>) {
+    self.fbb_.push_slot_always::<flatbuffers::WIPOffset<Tensor>>(Beta::VT_HIGH, high);
+  }
+  #[inline]
+  pub fn new(_fbb: &'b mut flatbuffers::FlatBufferBuilder<'a>) -> BetaBuilder<'a, 'b> {
+    let start = _fbb.start_table();
+    BetaBuilder {
+      fbb_: _fbb,
+      start_: start,
+    }
+  }
+  #[inline]
+  pub fn finish(self) -> flatbuffers::WIPOffset<Beta<'a>> {
     let o = self.fbb_.end_table(self.start_);
     flatbuffers::WIPOffset::new(o.value())
   }

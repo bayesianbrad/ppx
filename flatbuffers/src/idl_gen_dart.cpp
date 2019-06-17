@@ -16,6 +16,7 @@
 
 // independent from idl_parser, since this code is not needed for most clients
 #include <cassert>
+#include <unordered_map>
 
 #include "flatbuffers/code_generators.h"
 #include "flatbuffers/flatbuffers.h"
@@ -51,11 +52,11 @@ static const char *keywords[] = {
 // and tables) and output them to a single file.
 class DartGenerator : public BaseGenerator {
  public:
-  typedef std::map<std::string, std::string> namespace_code_map;
+  typedef std::unordered_map<std::string, std::string> namespace_code_map;
 
   DartGenerator(const Parser &parser, const std::string &path,
                 const std::string &file_name)
-      : BaseGenerator(parser, path, file_name, "", ".") {}
+      : BaseGenerator(parser, path, file_name, "", "."){};
   // Iterate through all definitions we haven't generate code for (enums,
   // structs, and tables) and output them to a single file.
   bool generate() {
@@ -120,7 +121,7 @@ class DartGenerator : public BaseGenerator {
               std::ostream_iterator<std::string>(sstream, "."));
 
     auto ret = sstream.str() + ns.components.back();
-    for (size_t i = 0; i < ret.size(); i++) {
+    for (int i = 0; ret[i]; i++) {
       auto lower = tolower(ret[i]);
       if (lower != ret[i]) {
         ret[i] = static_cast<char>(lower);
@@ -181,6 +182,7 @@ class DartGenerator : public BaseGenerator {
     }
 
     auto &code = *code_ptr;
+    if (indent) code += indent;
 
     for (auto it = dc.begin(); it != dc.end(); ++it) {
       if (indent) code += indent;
@@ -241,30 +243,32 @@ class DartGenerator : public BaseGenerator {
     // holes.
     if (!is_bit_flags) {
       code += "  static const int minValue = " +
-              enum_def.ToString(*enum_def.MinValue()) + ";\n";
+              NumToString(enum_def.vals.vec.front()->value) + ";\n";
       code += "  static const int maxValue = " +
-              enum_def.ToString(*enum_def.MaxValue()) + ";\n";
+              NumToString(enum_def.vals.vec.back()->value) + ";\n";
     }
 
     code +=
         "  static bool containsValue(int value) =>"
         " values.containsKey(value);\n\n";
 
-    for (auto it = enum_def.Vals().begin(); it != enum_def.Vals().end(); ++it) {
+    for (auto it = enum_def.vals.vec.begin(); it != enum_def.vals.vec.end();
+         ++it) {
       auto &ev = **it;
 
       if (!ev.doc_comment.empty()) {
-        if (it != enum_def.Vals().begin()) { code += '\n'; }
+        if (it != enum_def.vals.vec.begin()) { code += '\n'; }
         GenDocComment(ev.doc_comment, &code, "", "  ");
       }
       code += "  static const " + name + " " + ev.name + " = ";
-      code += "const " + name + "._(" + enum_def.ToString(ev) + ");\n";
+      code += "const " + name + "._(" + NumToString(ev.value) + ");\n";
     }
 
     code += "  static get values => {";
-    for (auto it = enum_def.Vals().begin(); it != enum_def.Vals().end(); ++it) {
+    for (auto it = enum_def.vals.vec.begin(); it != enum_def.vals.vec.end();
+         ++it) {
       auto &ev = **it;
-      code += enum_def.ToString(ev) + ": " + ev.name + ",";
+      code += NumToString(ev.value) + ": " + ev.name + ",";
     }
     code += "};\n\n";
 
@@ -494,19 +498,18 @@ class DartGenerator : public BaseGenerator {
       std::string type_name = GenDartTypeName(
           field.value.type, struct_def.defined_namespace, field, false);
 
-      GenDocComment(field.doc_comment, &code, "", "  ");
+      GenDocComment(field.doc_comment, &code, "");
 
       code += "  " + type_name + " get " + field_name;
       if (field.value.type.base_type == BASE_TYPE_UNION) {
         code += " {\n";
         code += "    switch (" + field_name + "Type?.value) {\n";
-        auto &enum_def = *field.value.type.enum_def;
-        for (auto en_it = enum_def.Vals().begin() + 1;
-             en_it != enum_def.Vals().end(); ++en_it) {
+        for (auto en_it = field.value.type.enum_def->vals.vec.begin() + 1;
+             en_it != field.value.type.enum_def->vals.vec.end(); ++en_it) {
           auto &ev = **en_it;
 
           auto enum_name = NamespaceAliasFromUnionType(ev.name);
-          code += "      case " + enum_def.ToString(ev) + ": return " +
+          code += "      case " + NumToString(ev.value) + ": return " +
                   enum_name + ".reader.vTableGet(_bc, _bcOffset, " +
                   NumToString(field.value.offset) + ", null);\n";
         }

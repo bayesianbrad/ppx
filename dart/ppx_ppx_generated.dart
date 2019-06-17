@@ -69,7 +69,7 @@ class DistributionTypeId {
   }
 
   static const int minValue = 0;
-  static const int maxValue = 8;
+  static const int maxValue = 9;
   static bool containsValue(int value) => values.containsKey(value);
 
   static const DistributionTypeId NONE = const DistributionTypeId._(0);
@@ -77,11 +77,12 @@ class DistributionTypeId {
   static const DistributionTypeId Uniform = const DistributionTypeId._(2);
   static const DistributionTypeId Categorical = const DistributionTypeId._(3);
   static const DistributionTypeId Poisson = const DistributionTypeId._(4);
-  static const DistributionTypeId Gamma = const DistributionTypeId._(5);
-  static const DistributionTypeId LogNormal = const DistributionTypeId._(6);
-  static const DistributionTypeId Exponential = const DistributionTypeId._(7);
-  static const DistributionTypeId Weibull = const DistributionTypeId._(8);
-  static get values => {0: NONE,1: Normal,2: Uniform,3: Categorical,4: Poisson,5: Gamma,6: LogNormal,7: Exponential,8: Weibull,};
+  static const DistributionTypeId Beta = const DistributionTypeId._(5);
+  static const DistributionTypeId Gamma = const DistributionTypeId._(6);
+  static const DistributionTypeId LogNormal = const DistributionTypeId._(7);
+  static const DistributionTypeId Exponential = const DistributionTypeId._(8);
+  static const DistributionTypeId Weibull = const DistributionTypeId._(9);
+  static get values => {0: NONE,1: Normal,2: Uniform,3: Categorical,4: Poisson,5: Beta,6: Gamma,7: LogNormal,8: Exponential,9: Weibull,};
 
   static const fb.Reader<DistributionTypeId> reader = const _DistributionTypeIdReader();
 
@@ -619,10 +620,11 @@ class Sample {
       case 2: return Uniform.reader.vTableGet(_bc, _bcOffset, 10, null);
       case 3: return Categorical.reader.vTableGet(_bc, _bcOffset, 10, null);
       case 4: return Poisson.reader.vTableGet(_bc, _bcOffset, 10, null);
-      case 5: return Gamma.reader.vTableGet(_bc, _bcOffset, 10, null);
-      case 6: return LogNormal.reader.vTableGet(_bc, _bcOffset, 10, null);
-      case 7: return Exponential.reader.vTableGet(_bc, _bcOffset, 10, null);
-      case 8: return Weibull.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 5: return Beta.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 6: return Gamma.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 7: return LogNormal.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 8: return Exponential.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 9: return Weibull.reader.vTableGet(_bc, _bcOffset, 10, null);
       default: return null;
     }
   }
@@ -840,10 +842,11 @@ class Observe {
       case 2: return Uniform.reader.vTableGet(_bc, _bcOffset, 10, null);
       case 3: return Categorical.reader.vTableGet(_bc, _bcOffset, 10, null);
       case 4: return Poisson.reader.vTableGet(_bc, _bcOffset, 10, null);
-      case 5: return Gamma.reader.vTableGet(_bc, _bcOffset, 10, null);
-      case 6: return LogNormal.reader.vTableGet(_bc, _bcOffset, 10, null);
-      case 7: return Exponential.reader.vTableGet(_bc, _bcOffset, 10, null);
-      case 8: return Weibull.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 5: return Beta.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 6: return Gamma.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 7: return LogNormal.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 8: return Exponential.reader.vTableGet(_bc, _bcOffset, 10, null);
+      case 9: return Weibull.reader.vTableGet(_bc, _bcOffset, 10, null);
       default: return null;
     }
   }
@@ -1533,6 +1536,97 @@ class PoissonObjectBuilder extends fb.ObjectBuilder {
     fbBuilder.startTable();
     if (rateOffset != null) {
       fbBuilder.addOffset(0, rateOffset);
+    }
+    return fbBuilder.endTable();
+  }
+
+  /// Convenience method to serialize to byte list.
+  @override
+  Uint8List toBytes([String fileIdentifier]) {
+    fb.Builder fbBuilder = new fb.Builder();
+    int offset = finish(fbBuilder);
+    return fbBuilder.finish(offset, fileIdentifier);
+  }
+}
+class Beta {
+  Beta._(this._bc, this._bcOffset);
+  factory Beta(List<int> bytes) {
+    fb.BufferContext rootRef = new fb.BufferContext.fromBytes(bytes);
+    return reader.read(rootRef, 0);
+  }
+
+  static const fb.Reader<Beta> reader = const _BetaReader();
+
+  final fb.BufferContext _bc;
+  final int _bcOffset;
+
+  Tensor get low => Tensor.reader.vTableGet(_bc, _bcOffset, 4, null);
+  Tensor get high => Tensor.reader.vTableGet(_bc, _bcOffset, 6, null);
+
+  @override
+  String toString() {
+    return 'Beta{low: $low, high: $high}';
+  }
+}
+
+class _BetaReader extends fb.TableReader<Beta> {
+  const _BetaReader();
+
+  @override
+  Beta createObject(fb.BufferContext bc, int offset) => 
+    new Beta._(bc, offset);
+}
+
+class BetaBuilder {
+  BetaBuilder(this.fbBuilder) {
+    assert(fbBuilder != null);
+  }
+
+  final fb.Builder fbBuilder;
+
+  void begin() {
+    fbBuilder.startTable();
+  }
+
+  int addLowOffset(int offset) {
+    fbBuilder.addOffset(0, offset);
+    return fbBuilder.offset;
+  }
+  int addHighOffset(int offset) {
+    fbBuilder.addOffset(1, offset);
+    return fbBuilder.offset;
+  }
+
+  int finish() {
+    return fbBuilder.endTable();
+  }
+}
+
+class BetaObjectBuilder extends fb.ObjectBuilder {
+  final TensorObjectBuilder _low;
+  final TensorObjectBuilder _high;
+
+  BetaObjectBuilder({
+    TensorObjectBuilder low,
+    TensorObjectBuilder high,
+  })
+      : _low = low,
+        _high = high;
+
+  /// Finish building, and store into the [fbBuilder].
+  @override
+  int finish(
+    fb.Builder fbBuilder) {
+    assert(fbBuilder != null);
+    final int lowOffset = _low?.getOrCreateOffset(fbBuilder);
+    final int highOffset = _high?.getOrCreateOffset(fbBuilder);
+
+    fbBuilder.startTable();
+    if (lowOffset != null) {
+      fbBuilder.addOffset(0, lowOffset);
+    }
+    if (highOffset != null) {
+      fbBuilder.addOffset(1, highOffset);
     }
     return fbBuilder.endTable();
   }

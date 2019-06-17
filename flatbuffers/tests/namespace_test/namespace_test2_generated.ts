@@ -30,15 +30,6 @@ static getRootAsTableInFirstNS(bb:flatbuffers.ByteBuffer, obj?:TableInFirstNS):T
 };
 
 /**
- * @param flatbuffers.ByteBuffer bb
- * @param TableInFirstNS= obj
- * @returns TableInFirstNS
- */
-static getSizePrefixedRootAsTableInFirstNS(bb:flatbuffers.ByteBuffer, obj?:TableInFirstNS):TableInFirstNS {
-  return (obj || new TableInFirstNS).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
  * @param NamespaceA.NamespaceB.TableInNestedNS= obj
  * @returns NamespaceA.NamespaceB.TableInNestedNS|null
  */
@@ -119,13 +110,6 @@ static endTableInFirstNS(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createTableInFirstNS(builder:flatbuffers.Builder, fooTableOffset:flatbuffers.Offset, fooEnum:NS8755221360535654258.NamespaceA.NamespaceB.EnumInNestedNS, fooStructOffset:flatbuffers.Offset):flatbuffers.Offset {
-  TableInFirstNS.startTableInFirstNS(builder);
-  TableInFirstNS.addFooTable(builder, fooTableOffset);
-  TableInFirstNS.addFooEnum(builder, fooEnum);
-  TableInFirstNS.addFooStruct(builder, fooStructOffset);
-  return TableInFirstNS.endTableInFirstNS(builder);
-}
 }
 }
 /**
@@ -153,15 +137,6 @@ __init(i:number, bb:flatbuffers.ByteBuffer):TableInC {
  * @returns TableInC
  */
 static getRootAsTableInC(bb:flatbuffers.ByteBuffer, obj?:TableInC):TableInC {
-  return (obj || new TableInC).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @param flatbuffers.ByteBuffer bb
- * @param TableInC= obj
- * @returns TableInC
- */
-static getSizePrefixedRootAsTableInC(bb:flatbuffers.ByteBuffer, obj?:TableInC):TableInC {
   return (obj || new TableInC).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 };
 
@@ -215,12 +190,6 @@ static endTableInC(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createTableInC(builder:flatbuffers.Builder, referToA1Offset:flatbuffers.Offset, referToA2Offset:flatbuffers.Offset):flatbuffers.Offset {
-  TableInC.startTableInC(builder);
-  TableInC.addReferToA1(builder, referToA1Offset);
-  TableInC.addReferToA2(builder, referToA2Offset);
-  return TableInC.endTableInC(builder);
-}
 }
 }
 /**
@@ -248,15 +217,6 @@ __init(i:number, bb:flatbuffers.ByteBuffer):SecondTableInA {
  * @returns SecondTableInA
  */
 static getRootAsSecondTableInA(bb:flatbuffers.ByteBuffer, obj?:SecondTableInA):SecondTableInA {
-  return (obj || new SecondTableInA).__init(bb.readInt32(bb.position()) + bb.position(), bb);
-};
-
-/**
- * @param flatbuffers.ByteBuffer bb
- * @param SecondTableInA= obj
- * @returns SecondTableInA
- */
-static getSizePrefixedRootAsSecondTableInA(bb:flatbuffers.ByteBuffer, obj?:SecondTableInA):SecondTableInA {
   return (obj || new SecondTableInA).__init(bb.readInt32(bb.position()) + bb.position(), bb);
 };
 
@@ -293,10 +253,5 @@ static endSecondTableInA(builder:flatbuffers.Builder):flatbuffers.Offset {
   return offset;
 };
 
-static createSecondTableInA(builder:flatbuffers.Builder, referToCOffset:flatbuffers.Offset):flatbuffers.Offset {
-  SecondTableInA.startSecondTableInA(builder);
-  SecondTableInA.addReferToC(builder, referToCOffset);
-  return SecondTableInA.endSecondTableInA(builder);
-}
 }
 }
